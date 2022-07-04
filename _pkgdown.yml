@@ -9,8 +9,32 @@ articles:
 - title: The Art of Metrics
   desc: Learn how we use numerical programming skills to translate greek letters into R code and estimate all kinds of econometric models.
   contents:
-  - intro-lm
+  - starts_with("art/")
 - title: The Zen of Programming
   desc: Learn how to enjoy programming by following best practices accumulated over generations of Zen masters.
   contents:
-  - intro-zen
+  - starts_with("zen/")
+
+home:
+  sidebar: FALSE
+
+navbar:
+  structure:
+    left:
+    - intro
+    - articles
+    right: github
+  components:
+    reference:
+      text: Reference
+      href: reference/index.html
+    github:
+      icon: fab fa-github fa-lg
+      href: https://github.com/nateybear/metrics-in-r/
+      aria-label: github
+    intro:
+      text: Get started
+      href: articles/metrics-in-r.html
+    articles:
+      text: Articles
+      href: articles/index.html
