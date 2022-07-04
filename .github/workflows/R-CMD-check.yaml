@@ -44,6 +44,23 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: check
 
+      - uses: actions/setup-python@v3
+        with:
+          python-version: 3.8
+
+      - name: setup r-reticulate venv
+        shell: Rscript {0}
+        run: |
+          remotes::install_local()
+          reticulate::virtualenv_create("r-reticulate", Sys.which("python"))
+          reticulate::virtualenv_install("r-reticulate",
+            c("docutils", "pandas", "scipy", "matplotlib"))
+          python <- reticulate::virtualenv_python("r-reticulate")
+          writeLines(sprintf("RETICULATE_PYTHON=%s", python),
+                     Sys.getenv("GITHUB_ENV"))
+
+
+
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
