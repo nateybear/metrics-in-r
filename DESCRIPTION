@@ -31,8 +31,6 @@ Imports:
     here,
     magrittr,
     quantreg,
-    remotes,
-    reticulate,
     rlang,
     sandwich,
     stats
