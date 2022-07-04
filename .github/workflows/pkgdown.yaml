@@ -34,7 +34,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::pkgdown, local::., , any::reticulate, any::remotes
+          extra-packages: any::pkgdown, local::., , any::reticulate, any::remotes, any::devtools
           needs: website
 
       - name: setup r-reticulate venv
@@ -42,8 +42,6 @@ jobs:
         run: |
           remotes::install_local()
           reticulate::virtualenv_create("r-reticulate", Sys.which("python"))
-          reticulate::virtualenv_install("r-reticulate",
-            c("docutils", "pandas", "scipy", "matplotlib"))
           python <- reticulate::virtualenv_python("r-reticulate")
           writeLines(sprintf("RETICULATE_PYTHON=%s", python),
                      Sys.getenv("GITHUB_ENV"))
