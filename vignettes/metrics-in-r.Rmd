@@ -1,0 +1,44 @@
+---
+title: "Get Started"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{metrics-in-r}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## I'm totally new to R!
+
+Welcome to the carnival 🎪. R is a great choice of programming language to learn for anyone interested in econometrics or data science more broadly. It's extremely popular, has high-quality tooling, and an incredibly inclusive community. Plus, it's free!
+
+As mentioned in the home page, [R for Data Science](https://r4ds.had.co.nz/) is a great introductory text, and you should read it throughout the semester to gain new R skills. For the purposes of getting started with this website, I suggest at least reading the Introductory chapters as well as the "Workflow: basics" and "Workflow: scripts" chapters before returning to this page.
+
+## Installation
+
+This package is not hosted on CRAN, so you can't install it with the `install.packages` command. You need to use `devtools` to install it from my GitHub page:
+
+```{r, eval = FALSE}
+library(devtools)
+install_github("nateybear/metrics-in-r")
+```
+
+You should see a bunch of other things installing too. This is the point: by installing my list of curated packages you should be "set up" and ready to start doing your homeworks in R.
+
+## Resources
+
+There are many great resources for learning R and specific aspects of R. Here is a non-exhaustive list that I will update occasionally:
+
+* [R for Data Science](https://r4ds.had.co.nz/) by Hadley Wickham and Garrett Grolemund
+  - Mentioned above
+* [Introduction to Econometrics with R](https://www.econometrics-with-r.org/) by Christoph Hanck, Martin Arnold, Alexander Gerber, and Martin Schmelzer
+  - This book mirrors Jeffery Wooldridge's Introduction to Econometrics and uses R to demonstrate how to do each of the examples. Extremely helpful if you are using Wooldridge for your class.
+* [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham
+  - What it says on the cover. If you already have some experience with R or programming in general, this is a deeper diver to learn how the language works under the hood.
+

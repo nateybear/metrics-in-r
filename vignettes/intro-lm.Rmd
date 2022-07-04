@@ -1,0 +1,17 @@
+---
+title: "Intro: An lm for Everyone"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Intro: An lm for Everyone}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Placeholder!

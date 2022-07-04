@@ -1,0 +1,16 @@
+---
+title: "Intro: A Meditation on Programming"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Intro: A Meditation on Programming}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+We begin with a poem:
+
+<blockquote>
+```{python, echo=F, comment = ""}
+import this
+```
+</blockquote>

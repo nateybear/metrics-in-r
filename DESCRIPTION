@@ -34,3 +34,7 @@ Imports:
     rlang,
     sandwich,
     stats
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
