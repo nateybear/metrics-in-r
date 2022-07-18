@@ -14,3 +14,18 @@ We begin with a poem:
 import this
 ```
 </blockquote>
+
+Take a moment and reflect on what stood out to you. Why did it stand out to you? Are there any lessons that you take away from this poem?
+
+The poem may be called "The Zen of Python," but it reflects a mindset that brings zen to progammers of any language. A simplicity of mind, a mantra, an ethos that not only makes them productive but also cultivates a peaceful existence.
+
+Contrary to popular belief, good software is not convoluted or complicated. Good software is **consistent** and **predictable**. I am not necessarily saying that it is *easy*: there are some types of things that are just plain difficult. But over the course of the last thirty years of modern computing, there are plenty of things that we have seen over and over again. They are not hard problems. I'm talking about things as simple as what to name your files. But we've done these things over and over again and now understand how to do them in a way that makes our software *accessible* to others.
+
+This section of articles is a veritable grab-bag of random topics that you will need to grasp on your way to becoming a Blue Collar Computer Scientist[^1]. I try to unite them using the themes of consistency and predictability. There are certain patterns in computer programming that make life easier, but I can't really explain them without just showing them to you.
+
+Your understanding of what consistent, predictable, accessible software means will develop and change as you learn more and gain more skills. However, keep this mantra in your heart and reflect on it as you learn. Seeing the patterns and predictability in the world of programming will give you an immense and special insight.
+
+<hr>
+Happy Coding!
+
+[^1]: The term "Blue Collar Computer Scientist" is borrowed from [Professor Scott Cunninghman](https://causalinf.substack.com/). Like it or not, all empirical Economists in this age have to have a working knowledge of computer programming, hence the term.

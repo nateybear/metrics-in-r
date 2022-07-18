@@ -12,6 +12,173 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(max.print = 20)
 ```
 
-Placeholder!
+### A data frame for everyone
+
+R is fundamentally different from Stata in that you can work with more than one dataset at a time. In Stata, the `use` command loads a single dataset into memory. In R, you create a **data frame** and save it to a variable. You can have as many data frames loaded as you want.
+
+The `haven` package in R can be used to load Stata `.dta` files. An example is below. Note that the `system.file()` command locates a `.dta` file that I have included with this package. This code loads the `HTV.DTA` file included with this package and saves it as a variable named `htv`. You can see from the output that `htv` is a "tibble" which is another name for a data frame.
+
+```{r}
+library(haven)
+htv <- read_dta(system.file("HTV.DTA", package = "metrics.in.r"))
+htv
+```
+
+<div class="card text-bg-secondary mb-3">
+<div class="card-header">More on data frames</div>
+<div class="card-body">
+<h5 class="card-title">Reshape, reformat, restructure</h5>
+<p class="card-text">See Chapter 5 of R for Data Science <a href="https://r4ds.had.co.nz/transform.html">here</a> for information on how to transform your data frame to create new variables, summarize your datasets, etc.</p>
+</div>
+</div>
+
+### A formula for everyone
+
+Before we get to running regressions, it's worth talking a little bit about how we *describe* regressions in R. There is a special object called a **formula** which is a symbolic description of the equation we want to estimate. We simply put the outcome variable on the left-hand side and any explanatory variables on the right-hand side, like so:
+```{r}
+wage ~ abil + educ + motheduc
+```
+
+This is saying we want to estimate wage as a function of ability, education, and mother's education. It's a *symbolic* description because the objects `wage`, `abil`, `educ`, and `motheduc` aren't actually defined! That is, we get an error if we do this:
+```{r, error=TRUE}
+wage
+```
+So without elaborating too much, I just want to show that formulas are "special" objects in R. This means that there are some "special" rules about formulas that you need to know:
+
+- If you want to include the product of two variables in a formula, use `:` like so: `wage ~ abil:educ`. This regresses wage on the product of ability and education. You can use `*` to get main effects as well as interactions, so `wage ~ abil * educ` is the same as `wage ~ abil + educ + abil:educ`.
+- You can estimate a model without an intercept by adding `-1` to the end of your formula, so `wage ~ educ + abil - 1` regresses wage on education and ability with no intercept.
+- You can use functions inside of a formula, i.e. `log(wage) ~ abil + educ` regresses log wage on education and ability.
+- HOWEVER, `^` has a special meaning in formulas, so `wage ~ educ^2` is NOT regressing wage on education squared! There is a special function `I()` to escape any special meaning in formulas. So you would have to write `wage ~ I(educ^2)` to regress wage on squared education. Because of this weird gotcha, I generally prefer to generate a new variable, i.e. doing `htv |> mutate(educ_sq = educ^2)` and then using `wage ~ educ_sq` in my formula. See the "more on data frames" note above for some information on generating new variables.
+
+There are some more rules you can read about by typing `?formula` into your R console, but these are the "need to know" rules, in my opinion.
+
+### An lm for Everyone
+
+Now that we know how to load a data frame and write a formula, we can create a regression model. The primary function for this is the `lm` function, which stands for "linear model." Linear models in R require a formula and a data frame as input. Let's see an example of what this looks like:
+
+```{r}
+lm(wage ~ educ * abil, data = htv)
+```
+
+What we see are estimates of the $\beta_i$s in the regression model
+$$
+E(\text{wage}\mid \text{educ}, \text{abil}) = \beta_1 + \beta_2\text{educ} + \beta_3\text{abil} + \beta_4\text{educ}*\text{abil}
+$$
+
+There's a lot more information we can get from a linear model, however. Let's store the model to a variable and see what we can do with it:
+
+```{r}
+model <- lm(wage ~ educ * abil, data = htv)
+names(model)
+```
+
+What this demonstrates is that the `model` variable stores information related to fitting the linear model. The `names` of the model are the information that it stores. For instance, we can see the coefficient estimates again by writing
+```{r}
+model$coefficients
+```
+
+Another way to write this is
+```{r}
+coef(model)
+```
+
+<div class="card text-bg-secondary mb-3">
+<div class="card-header">A Fundamental Programming Pattern Demonstrated</div>
+<div class="card-body">
+<h5 class="card-title">Why are there so many ways to do the same thing?</h5>
+<p class="card-text">
+This has to do with a programming best practice known roughly as "hiding implementation details." The `model$coefficients` call is NOT how we want to access the coefficients, in general. In fact, you should avoid using any of the properties in `names(model)` directly, if you can.
+</p>
+<p class="card-text">Why?</p>
+<p class="card-text">
+The properties in `names(model)` represent the **internal** structure of the linear model object. I run `names(model)` to give you an idea of what **internal** things you might want to store if you are estimating a linear model. However, there are **external** or **public** ways of interacting with linear models that are meant for us, the users of linear models. `coef` is one such example. In fact, type `?coef` into your R console and read the first sentence:
+
+> `coef` is a **generic** function which extracts model coefficients from objects returned by modeling functions.
+</p>
+<p class="card-text">
+The idea of generics is a fundamental programming concept. The `coef` function is not just for linear models, it is for many, many types of models! Each type of model can choose how to **implement** the `coef` function using its **internal** structure, but we the users don't have to know or care how each model chooses to do that. We just need to call the `coef` function. It simplifies our lives by reducing the number of functions and amount of detail that we have to learn.
+</p>
+</div>
+</div>
+
+#### Within the lm
+
+Here is a non-exhaustive list of interesting things you can do with an lm.
+
+A summary table of coefficients with standard errors (assuming homoskedasticity!), F-statistic, R-squared, and residual MSE:
+
+```{r}
+summary(model)
+```
+
+A vector of fitted values $\widehat{\text{wage}}$ and residuals $\hat{u}$, respectively:
+
+```{r}
+fitted(model)
+resid(model)
+```
+
+A covariance matrix of your $\beta_i$s, assuming homoskedasticity:
+
+```{r}
+vcov(model)
+```
+
+### Postscript: Factors and `xpd`
+
+Two more points if you're hungry for more.
+
+First, handling non-numeric columns is much nicer in R than in Stata. In general, it just works. Typically, with a categorical variable we think of estimating a linear model including a categorical variable as estimating it with a set of dummy variables equal to one or zero for each "level" of the categorical variable. An example of this in the HTV dataset is the region that each individual lives in:
+
+```{r, message = FALSE}
+library(tidyverse)
+htv |> 
+  select(nc18, ne18, south18, west18) |> 
+  sample_n(10)
+```
+
+The code above is selecting the four columns and then picking 10 random rows. It's just to demonstrate that these four columns take on mutually exclusive values of one or zero.
+
+We can convert this to one column with the *categorical* value of region. One way to do that is to use the `case_when()` function:
+
+```{r}
+htv <- htv |>
+  mutate(region = case_when(
+    ne18 == 1    ~ "Northeast",
+    nc18 == 1    ~ "North-Central",
+    west18 == 1  ~ "West",
+    south18 == 1 ~ "South"
+  ))
+
+htv |> select(region) |> sample_n(10)
+```
+
+Now when we create a linear model using the region variable, R will create dummies for us!
+
+```{r}
+lm(wage ~ region, data = htv)
+```
+
+Hence, whereas in Stata we need to be concerned about whether we have one categorical column or a set of dummy variables, in R our programming language is smart enough to convert between the two relatively easily. For more information on categorical variables in R, see chapter 15 of R for Data Science [here](https://r4ds.had.co.nz/factors.html).
+
+<hr>
+
+Second, if you find yourself writing really big formulas, you might consider a tool in the `fixest` package called `xpd()`. It performs several different types of "formula expansion" to make your formulas a little more concise. If you have a bunch of columns that are numbered sequentially, you could do this:
+
+```{r}
+library(fixest)
+xpd(y ~ x.[1:20])
+```
+
+If you have some other quantifiable pattern in your formula, you can use something called a regular expression. You can read all about regular expressions in Chapter 14 of R for Data Science [here](https://r4ds.had.co.nz/strings.html). Here's an example that gets all columns from HTV that end in "educ":
+
+```{r}
+xpd(wage ~ ..("^.*educ$"), data = htv)
+```
+
+<hr>
+
+Happy coding!
