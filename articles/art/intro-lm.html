@@ -161,21 +161,21 @@ E(\text{wage}\mid \text{educ}, \text{abil}) = \beta_1 + \beta_2\text{educ} + \be
 <code class="sourceCode R"><span><span class="va">model</span><span class="op">$</span><span class="va">coefficients</span></span>
 <span><span class="co">#&gt; (Intercept)        educ        abil   educ:abil </span></span>
 <span><span class="co">#&gt; -0.65483870  0.98368161 -0.40005124  0.06938703</span></span></code></pre></div>
-<p>Another way to write this is</p>
+<p>You can also get the coefficients of the model by using the <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef()</a></code> function like so:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="co">#&gt; (Intercept)        educ        abil   educ:abil </span></span>
 <span><span class="co">#&gt; -0.65483870  0.98368161 -0.40005124  0.06938703</span></span></code></pre></div>
 <div class="card text-bg-secondary mb-3">
 <div class="card-header">
-A Fundamental Programming Pattern Demonstrated
+Generics Demonstrated
 </div>
 <div class="card-body">
 <h5 class="card-title">
 Why are there so many ways to do the same thing?
 </h5>
 <p class="card-text">
-This has to do with a programming best practice known roughly as “hiding implementation details.” The <code>model$coefficients</code> call is NOT how we want to access the coefficients, in general. In fact, you should avoid using any of the properties in <code>names(model)</code> directly, if you can.
+This has to do with a programming best practice known roughly as “hiding implementation details.” The <code>model$coefficients</code> call is NOT how we want to access the coefficients, in general. In fact, for linear models you should avoid using any of the properties in <code>names(model)</code> directly, if you can.
 </p>
 <p class="card-text">
 Why?
@@ -195,7 +195,7 @@ The idea of generics is a fundamental programming concept. The <code>coef</code>
 <div class="section level4">
 <h4 id="within-the-lm">Within the lm<a class="anchor" aria-label="anchor" href="#within-the-lm"></a>
 </h4>
-<p>Here is a non-exhaustive list of interesting things you can do with an lm.</p>
+<p>Here is a non-exhaustive list of other generic functions you can use on linear models.</p>
 <p>A summary table of coefficients with standard errors (assuming homoskedasticity!), F-statistic, R-squared, and residual MSE:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
@@ -271,15 +271,15 @@ The idea of generics is a fundamental programming concept. The <code>coef</code>
 <span><span class="co">#&gt;     nc18  ne18 south18 west18</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     0     0       1      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     0     1       0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     0     0       0      1</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     1     0       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     1     0       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     0     1       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     0     1       0      0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     1     0       0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     0     1       0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     0     0       1      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     0     0       1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     1     0       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     0     1       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     0     0       0      1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     0     1       0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     1     0       0      0</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     0     1       0      0</span></span></code></pre></div>
 <p>The code above is selecting the four columns and then picking 10 random rows. It’s just to demonstrate that these four columns take on mutually exclusive values of one or zero.</p>
 <p>We can convert this to one column with the <em>categorical</em> value of region. One way to do that is to use the <code><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when()</a></code> function:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -295,16 +295,16 @@ The idea of generics is a fundamental programming concept. The <code>coef</code>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 1</span></span></span>
 <span><span class="co">#&gt;    region       </span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> South        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Northeast    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> North-Central</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Northeast    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> Northeast    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> North-Central</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> Northeast    </span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> North-Central</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> West         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> North-Central</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> North-Central</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> West</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> North-Central</span></span></code></pre></div>
 <p>Now when we create a linear model using the region variable, R will create dummies for us!</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">wage</span> <span class="op">~</span> <span class="va">region</span>, data <span class="op">=</span> <span class="va">htv</span><span class="op">)</span></span>
