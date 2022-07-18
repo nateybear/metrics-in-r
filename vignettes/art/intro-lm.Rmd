@@ -80,17 +80,17 @@ What this demonstrates is that the `model` variable stores information related t
 model$coefficients
 ```
 
-Another way to write this is
+You can also get the coefficients of the model by using the `coef()` function like so:
 ```{r}
 coef(model)
 ```
 
 <div class="card text-bg-secondary mb-3">
-<div class="card-header">A Fundamental Programming Pattern Demonstrated</div>
+<div class="card-header">Generics Demonstrated</div>
 <div class="card-body">
 <h5 class="card-title">Why are there so many ways to do the same thing?</h5>
 <p class="card-text">
-This has to do with a programming best practice known roughly as "hiding implementation details." The `model$coefficients` call is NOT how we want to access the coefficients, in general. In fact, you should avoid using any of the properties in `names(model)` directly, if you can.
+This has to do with a programming best practice known roughly as "hiding implementation details." The `model$coefficients` call is NOT how we want to access the coefficients, in general. In fact, for linear models you should avoid using any of the properties in `names(model)` directly, if you can.
 </p>
 <p class="card-text">Why?</p>
 <p class="card-text">
@@ -106,7 +106,7 @@ The idea of generics is a fundamental programming concept. The `coef` function i
 
 #### Within the lm
 
-Here is a non-exhaustive list of interesting things you can do with an lm.
+Here is a non-exhaustive list of other generic functions you can use on linear models.
 
 A summary table of coefficients with standard errors (assuming homoskedasticity!), F-statistic, R-squared, and residual MSE:
 
