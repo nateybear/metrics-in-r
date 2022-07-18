@@ -8,8 +8,8 @@
 <meta name="description" content="metrics.in.r">
 <title>Intro: An lm for Everyone • metrics.in.r</title>
 <script src="../../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../../deps/bootstrap-5.1.0/bootstrap.min.css" rel="stylesheet">
-<script src="../../deps/bootstrap-5.1.0/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
+<script src="../../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../../pkgdown.js"></script><meta property="og:title" content="Intro: An lm for Everyone">
 <meta property="og:description" content="metrics.in.r">
@@ -74,8 +74,264 @@
 
     
     
-<p>Placeholder!</p>
-  </main>
+<div class="section level3">
+<h3 id="a-data-frame-for-everyone">A data frame for everyone<a class="anchor" aria-label="anchor" href="#a-data-frame-for-everyone"></a>
+</h3>
+<p>R is fundamentally different from Stata in that you can work with more than one dataset at a time. In Stata, the <code>use</code> command loads a single dataset into memory. In R, you create a <strong>data frame</strong> and save it to a variable. You can have as many data frames loaded as you want.</p>
+<p>The <code>haven</code> package in R can be used to load Stata <code>.dta</code> files. An example is below. Note that the <code><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file()</a></code> command locates a <code>.dta</code> file that I have included with this package. This code loads the <code>HTV.DTA</code> file included with this package and saves it as a variable named <code>htv</code>. You can see from the output that <code>htv</code> is a “tibble” which is another name for a data frame.</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://haven.tidyverse.org" class="external-link">haven</a></span><span class="op">)</span></span>
+<span><span class="va">htv</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://haven.tidyverse.org/reference/read_dta.html" class="external-link">read_dta</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">"HTV.DTA"</span>, package <span class="op">=</span> <span class="st">"metrics.in.r"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">htv</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 1,230 × 23</span></span></span>
+<span><span class="co">#&gt;     wage   abil  educ    ne    nc  west south exper motheduc fatheduc brkhme14</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> 12.0   5.03     15     0     0     1     0     9       12       12        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>  8.91  2.04     13     1     0     0     0     8       12       10        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> 15.5   2.48     15     1     0     0     0    11       12       16        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> 13.3   3.61     15     1     0     0     0     6       12       12        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> 11.1   2.64     13     1     0     0     0    15       12       15        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> 17.5   3.47     18     1     0     0     0     8       12       12        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> 21.1  -<span style="color: #BB0000;">1.76</span>     13     1     0     0     0    13       13       12        0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> 11.7  -<span style="color: #BB0000;">0.134</span>    12     0     0     0     1    14       12       12        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> 17.0   2.07     13     1     0     0     0     9       10       12        1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 11.5  -<span style="color: #BB0000;">0.338</span>    12     1     0     0     0     9       14       12        0</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># … with 1,220 more rows, and 12 more variables: sibs &lt;dbl&gt;, urban &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   ne18 &lt;dbl&gt;, nc18 &lt;dbl&gt;, south18 &lt;dbl&gt;, west18 &lt;dbl&gt;, urban18 &lt;dbl&gt;,</span></span></span>
+<span><span class="co">#&gt; <span style="color: #949494;">#   tuit17 &lt;dbl&gt;, tuit18 &lt;dbl&gt;, lwage &lt;dbl&gt;, expersq &lt;dbl&gt;, ctuit &lt;dbl&gt;</span></span></span></code></pre></div>
+<div class="card text-bg-secondary mb-3">
+<div class="card-header">
+More on data frames
+</div>
+<div class="card-body">
+<h5 class="card-title">
+Reshape, reformat, restructure
+</h5>
+<p class="card-text">
+See Chapter 5 of R for Data Science <a href="https://r4ds.had.co.nz/transform.html" class="external-link">here</a> for information on how to transform your data frame to create new variables, summarize your datasets, etc.
+</p>
+</div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="a-formula-for-everyone">A formula for everyone<a class="anchor" aria-label="anchor" href="#a-formula-for-everyone"></a>
+</h3>
+<p>Before we get to running regressions, it’s worth talking a little bit about how we <em>describe</em> regressions in R. There is a special object called a <strong>formula</strong> which is a symbolic description of the equation we want to estimate. We simply put the outcome variable on the left-hand side and any explanatory variables on the right-hand side, like so:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wage</span> <span class="op">~</span> <span class="va">abil</span> <span class="op">+</span> <span class="va">educ</span> <span class="op">+</span> <span class="va">motheduc</span></span>
+<span><span class="co">#&gt; wage ~ abil + educ + motheduc</span></span></code></pre></div>
+<p>This is saying we want to estimate wage as a function of ability, education, and mother’s education. It’s a <em>symbolic</em> description because the objects <code>wage</code>, <code>abil</code>, <code>educ</code>, and <code>motheduc</code> aren’t actually defined! That is, we get an error if we do this:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">wage</span></span>
+<span><span class="co">#&gt; Error in eval(expr, envir, enclos): object 'wage' not found</span></span></code></pre></div>
+<p>So without elaborating too much, I just want to show that formulas are “special” objects in R. This means that there are some “special” rules about formulas that you need to know:</p>
+<ul>
+<li>If you want to include the product of two variables in a formula, use <code>:</code> like so: <code>wage ~ abil:educ</code>. This regresses wage on the product of ability and education. You can use <code>*</code> to get main effects as well as interactions, so <code>wage ~ abil * educ</code> is the same as <code>wage ~ abil + educ + abil:educ</code>.</li>
+<li>You can estimate a model without an intercept by adding <code>-1</code> to the end of your formula, so <code>wage ~ educ + abil - 1</code> regresses wage on education and ability with no intercept.</li>
+<li>You can use functions inside of a formula, i.e. <code>log(wage) ~ abil + educ</code> regresses log wage on education and ability.</li>
+<li>HOWEVER, <code>^</code> has a special meaning in formulas, so <code>wage ~ educ^2</code> is NOT regressing wage on education squared! There is a special function <code><a href="https://rdrr.io/r/base/AsIs.html" class="external-link">I()</a></code> to escape any special meaning in formulas. So you would have to write <code>wage ~ I(educ^2)</code> to regress wage on squared education. Because of this weird gotcha, I generally prefer to generate a new variable, i.e. doing <code>htv |&gt; mutate(educ_sq = educ^2)</code> and then using <code>wage ~ educ_sq</code> in my formula. See the “more on data frames” note above for some information on generating new variables.</li>
+</ul>
+<p>There are some more rules you can read about by typing <code><a href="https://rdrr.io/r/stats/formula.html" class="external-link">?formula</a></code> into your R console, but these are the “need to know” rules, in my opinion.</p>
+</div>
+<div class="section level3">
+<h3 id="an-lm-for-everyone">An lm for Everyone<a class="anchor" aria-label="anchor" href="#an-lm-for-everyone"></a>
+</h3>
+<p>Now that we know how to load a data frame and write a formula, we can create a regression model. The primary function for this is the <code>lm</code> function, which stands for “linear model.” Linear models in R require a formula and a data frame as input. Let’s see an example of what this looks like:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">wage</span> <span class="op">~</span> <span class="va">educ</span> <span class="op">*</span> <span class="va">abil</span>, data <span class="op">=</span> <span class="va">htv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; lm(formula = wage ~ educ * abil, data = htv)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt; (Intercept)         educ         abil    educ:abil  </span></span>
+<span><span class="co">#&gt;    -0.65484      0.98368     -0.40005      0.06939</span></span></code></pre></div>
+<p>What we see are estimates of the <span class="math inline">\(\beta_i\)</span>s in the regression model <span class="math display">\[
+E(\text{wage}\mid \text{educ}, \text{abil}) = \beta_1 + \beta_2\text{educ} + \beta_3\text{abil} + \beta_4\text{educ}*\text{abil}
+\]</span></p>
+<p>There’s a lot more information we can get from a linear model, however. Let’s store the model to a variable and see what we can do with it:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">wage</span> <span class="op">~</span> <span class="va">educ</span> <span class="op">*</span> <span class="va">abil</span>, data <span class="op">=</span> <span class="va">htv</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="co">#&gt;  [1] "coefficients"  "residuals"     "effects"       "rank"         </span></span>
+<span><span class="co">#&gt;  [5] "fitted.values" "assign"        "qr"            "df.residual"  </span></span>
+<span><span class="co">#&gt;  [9] "xlevels"       "call"          "terms"         "model"</span></span></code></pre></div>
+<p>What this demonstrates is that the <code>model</code> variable stores information related to fitting the linear model. The <code>names</code> of the model are the information that it stores. For instance, we can see the coefficient estimates again by writing</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">model</span><span class="op">$</span><span class="va">coefficients</span></span>
+<span><span class="co">#&gt; (Intercept)        educ        abil   educ:abil </span></span>
+<span><span class="co">#&gt; -0.65483870  0.98368161 -0.40005124  0.06938703</span></span></code></pre></div>
+<p>Another way to write this is</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; (Intercept)        educ        abil   educ:abil </span></span>
+<span><span class="co">#&gt; -0.65483870  0.98368161 -0.40005124  0.06938703</span></span></code></pre></div>
+<div class="card text-bg-secondary mb-3">
+<div class="card-header">
+A Fundamental Programming Pattern Demonstrated
+</div>
+<div class="card-body">
+<h5 class="card-title">
+Why are there so many ways to do the same thing?
+</h5>
+<p class="card-text">
+This has to do with a programming best practice known roughly as “hiding implementation details.” The <code>model$coefficients</code> call is NOT how we want to access the coefficients, in general. In fact, you should avoid using any of the properties in <code>names(model)</code> directly, if you can.
+</p>
+<p class="card-text">
+Why?
+</p>
+<p class="card-text">
+</p>
+<p>The properties in <code>names(model)</code> represent the <strong>internal</strong> structure of the linear model object. I run <code>names(model)</code> to give you an idea of what <strong>internal</strong> things you might want to store if you are estimating a linear model. However, there are <strong>external</strong> or <strong>public</strong> ways of interacting with linear models that are meant for us, the users of linear models. <code>coef</code> is one such example. In fact, type <code><a href="https://rdrr.io/r/stats/coef.html" class="external-link">?coef</a></code> into your R console and read the first sentence:</p>
+<blockquote>
+<p><code>coef</code> is a <strong>generic</strong> function which extracts model coefficients from objects returned by modeling functions.</p>
+</blockquote>
+
+<p class="card-text">
+The idea of generics is a fundamental programming concept. The <code>coef</code> function is not just for linear models, it is for many, many types of models! Each type of model can choose how to <strong>implement</strong> the <code>coef</code> function using its <strong>internal</strong> structure, but we the users don’t have to know or care how each model chooses to do that. We just need to call the <code>coef</code> function. It simplifies our lives by reducing the number of functions and amount of detail that we have to learn.
+</p>
+</div>
+</div>
+<div class="section level4">
+<h4 id="within-the-lm">Within the lm<a class="anchor" aria-label="anchor" href="#within-the-lm"></a>
+</h4>
+<p>Here is a non-exhaustive list of interesting things you can do with an lm.</p>
+<p>A summary table of coefficients with standard errors (assuming homoskedasticity!), F-statistic, R-squared, and residual MSE:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; lm(formula = wage ~ educ * abil, data = htv)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Residuals:</span></span>
+<span><span class="co">#&gt;     Min      1Q  Median      3Q     Max </span></span>
+<span><span class="co">#&gt; -17.943  -4.602  -1.184   2.420  69.450 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;             Estimate Std. Error t value Pr(&gt;|t|)    </span></span>
+<span><span class="co">#&gt; (Intercept) -0.65484    1.97210  -0.332    0.740    </span></span>
+<span><span class="co">#&gt; educ         0.98368    0.16900   5.821 7.48e-09 ***</span></span>
+<span><span class="co">#&gt; abil        -0.40005    0.56506  -0.708    0.479    </span></span>
+<span><span class="co">#&gt; educ:abil    0.06939    0.04565   1.520    0.129    </span></span>
+<span><span class="co">#&gt; ---</span></span>
+<span><span class="co">#&gt; Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Residual standard error: 8.438 on 1226 degrees of freedom</span></span>
+<span><span class="co">#&gt; Multiple R-squared:  0.1388, Adjusted R-squared:  0.1367 </span></span>
+<span><span class="co">#&gt; F-statistic: 65.88 on 3 and 1226 DF,  p-value: &lt; 2.2e-16</span></span></code></pre></div>
+<p>A vector of fitted values <span class="math inline">\(\widehat{\text{wage}}\)</span> and residuals <span class="math inline">\(\hat{u}\)</span>, respectively:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/fitted.values.html" class="external-link">fitted</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="co">#&gt;        1        2        3        4        5        6        7        8 </span></span>
+<span><span class="co">#&gt; 17.32193 13.15564 15.68683 16.41302 13.45652 20.00085 11.24712 11.09155 </span></span>
+<span><span class="co">#&gt;        9       10       11       12       13       14       15       16 </span></span>
+<span><span class="co">#&gt; 13.17334 11.00293 11.74663 12.62569 19.47078 12.68040 20.02992 16.59600 </span></span>
+<span><span class="co">#&gt;       17       18       19       20 </span></span>
+<span><span class="co">#&gt; 17.54809 16.83575 15.64953 22.10532 </span></span>
+<span><span class="co">#&gt;  [ reached getOption("max.print") -- omitted 1210 entries ]</span></span>
+<span><span class="co">#&gt; attr(,"label")</span></span>
+<span><span class="co">#&gt; [1] "hourly wage, 1991"</span></span>
+<span><span class="co">#&gt; attr(,"format.stata")</span></span>
+<span><span class="co">#&gt; [1] "%9.0g"</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/residuals.html" class="external-link">resid</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="co">#&gt;           1           2           3           4           5           6 </span></span>
+<span><span class="co">#&gt;  -5.3026990  -4.2429855  -0.1724920  -3.0796881  -2.3864056  -2.5183286 </span></span>
+<span><span class="co">#&gt;           7           8           9          10          11          12 </span></span>
+<span><span class="co">#&gt;   9.8499222   0.5755521   3.7877886   0.5355364   3.0681884   8.0734791 </span></span>
+<span><span class="co">#&gt;          13          14          15          16          17          18 </span></span>
+<span><span class="co">#&gt;   9.2129169  -0.1804047  15.8412321   6.8072210  -0.9066400  -0.7906550 </span></span>
+<span><span class="co">#&gt;          19          20 </span></span>
+<span><span class="co">#&gt;  -3.6303015 -13.5704727 </span></span>
+<span><span class="co">#&gt;  [ reached getOption("max.print") -- omitted 1210 entries ]</span></span>
+<span><span class="co">#&gt; attr(,"label")</span></span>
+<span><span class="co">#&gt; [1] "hourly wage, 1991"</span></span>
+<span><span class="co">#&gt; attr(,"format.stata")</span></span>
+<span><span class="co">#&gt; [1] "%9.0g"</span></span></code></pre></div>
+<p>A covariance matrix of your <span class="math inline">\(\beta_i\)</span>s, assuming homoskedasticity:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
+<span><span class="co">#&gt;             (Intercept)         educ        abil    educ:abil</span></span>
+<span><span class="co">#&gt; (Intercept)  3.88918247 -0.328879090 -0.57247356  0.056087334</span></span>
+<span><span class="co">#&gt; educ        -0.32887909  0.028561667  0.05072765 -0.005085001</span></span>
+<span><span class="co">#&gt; abil        -0.57247356  0.050727650  0.31928964 -0.025023818</span></span>
+<span><span class="co">#&gt; educ:abil    0.05608733 -0.005085001 -0.02502382  0.002083647</span></span></code></pre></div>
+</div>
+</div>
+<div class="section level3">
+<h3 id="postscript-factors-and-xpd">Postscript: Factors and <code>xpd</code><a class="anchor" aria-label="anchor" href="#postscript-factors-and-xpd"></a>
+</h3>
+<p>Two more points if you’re hungry for more.</p>
+<p>First, handling non-numeric columns is much nicer in R than in Stata. In general, it just works. Typically, with a categorical variable we think of estimating a linear model including a categorical variable as estimating it with a set of dummy variables equal to one or zero for each “level” of the categorical variable. An example of this in the HTV dataset is the region that each individual lives in:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
+<span><span class="va">htv</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">nc18</span>, <span class="va">ne18</span>, <span class="va">south18</span>, <span class="va">west18</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 4</span></span></span>
+<span><span class="co">#&gt;     nc18  ne18 south18 west18</span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     0     0       1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     0     1       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     0     0       0      1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     1     0       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     1     0       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     0     1       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     0     0       1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     0     0       1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     0     1       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     1     0       0      0</span></span></code></pre></div>
+<p>The code above is selecting the four columns and then picking 10 random rows. It’s just to demonstrate that these four columns take on mutually exclusive values of one or zero.</p>
+<p>We can convert this to one column with the <em>categorical</em> value of region. One way to do that is to use the <code><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when()</a></code> function:</p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">htv</span> <span class="op">&lt;-</span> <span class="va">htv</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>region <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when</a></span><span class="op">(</span></span>
+<span>    <span class="va">ne18</span> <span class="op">==</span> <span class="fl">1</span>    <span class="op">~</span> <span class="st">"Northeast"</span>,</span>
+<span>    <span class="va">nc18</span> <span class="op">==</span> <span class="fl">1</span>    <span class="op">~</span> <span class="st">"North-Central"</span>,</span>
+<span>    <span class="va">west18</span> <span class="op">==</span> <span class="fl">1</span>  <span class="op">~</span> <span class="st">"West"</span>,</span>
+<span>    <span class="va">south18</span> <span class="op">==</span> <span class="fl">1</span> <span class="op">~</span> <span class="st">"South"</span></span>
+<span>  <span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">htv</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">region</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/sample_n.html" class="external-link">sample_n</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
+<span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 1</span></span></span>
+<span><span class="co">#&gt;    region       </span></span>
+<span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> Northeast    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> North-Central</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> Northeast    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> North-Central</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> West         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> North-Central</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> West</span></span></code></pre></div>
+<p>Now when we create a linear model using the region variable, R will create dummies for us!</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">wage</span> <span class="op">~</span> <span class="va">region</span>, data <span class="op">=</span> <span class="va">htv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Call:</span></span>
+<span><span class="co">#&gt; lm(formula = wage ~ region, data = htv)</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; Coefficients:</span></span>
+<span><span class="co">#&gt;     (Intercept)  regionNortheast      regionSouth       regionWest  </span></span>
+<span><span class="co">#&gt;         12.7275           2.6015          -0.5605           0.5629</span></span></code></pre></div>
+<p>Hence, whereas in Stata we need to be concerned about whether we have one categorical column or a set of dummy variables, in R our programming language is smart enough to convert between the two relatively easily. For more information on categorical variables in R, see chapter 15 of R for Data Science <a href="https://r4ds.had.co.nz/factors.html" class="external-link">here</a>.</p>
+<hr>
+<p>Second, if you find yourself writing really big formulas, you might consider a tool in the <code>fixest</code> package called <code><a href="https://lrberge.github.io/fixest/reference/xpd.html" class="external-link">xpd()</a></code>. It performs several different types of “formula expansion” to make your formulas a little more concise. If you have a bunch of columns that are numbered sequentially, you could do this:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lrberge.github.io/fixest/" class="external-link">fixest</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://lrberge.github.io/fixest/reference/xpd.html" class="external-link">xpd</a></span><span class="op">(</span><span class="va">y</span> <span class="op">~</span> <span class="va">x.</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; y ~ x1 + x2 + x3 + x4 + x5 + x6 + x7 + x8 + x9 + x10 + x11 + </span></span>
+<span><span class="co">#&gt;     x12 + x13 + x14 + x15 + x16 + x17 + x18 + x19 + x20</span></span></code></pre></div>
+<p>If you have some other quantifiable pattern in your formula, you can use something called a regular expression. You can read all about regular expressions in Chapter 14 of R for Data Science <a href="https://r4ds.had.co.nz/strings.html" class="external-link">here</a>. Here’s an example that gets all columns from HTV that end in “educ”:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://lrberge.github.io/fixest/reference/xpd.html" class="external-link">xpd</a></span><span class="op">(</span><span class="va">wage</span> <span class="op">~</span> <span class="fu">..</span><span class="op">(</span><span class="st">"^.*educ$"</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">htv</span><span class="op">)</span></span>
+<span><span class="co">#&gt; wage ~ educ + motheduc + fatheduc</span></span></code></pre></div>
+<hr>
+<p>Happy coding!</p>
+</div>
+  </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
+    </nav></aside>
 </div>
 
 
@@ -87,7 +343,7 @@
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
     </footer>

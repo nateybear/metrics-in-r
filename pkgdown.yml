@@ -1,11 +1,11 @@
 pandoc: 2.14.2
-pkgdown: 2.0.5
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   intro-lm: art/intro-lm.html
   metrics-in-r: metrics-in-r.html
   intro-zen: zen/intro-zen.html
-last_built: 2022-07-04T17:44Z
+last_built: 2022-07-18T20:42Z
 urls:
   reference: https://nateybear.github.io/metrics-in-r/reference
   article: https://nateybear.github.io/metrics-in-r/articles
