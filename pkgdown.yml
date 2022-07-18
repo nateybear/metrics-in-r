@@ -5,7 +5,7 @@ articles:
   intro-lm: art/intro-lm.html
   metrics-in-r: metrics-in-r.html
   intro-zen: zen/intro-zen.html
-last_built: 2022-07-18T20:46Z
+last_built: 2022-07-18T20:50Z
 urls:
   reference: https://nateybear.github.io/metrics-in-r/reference
   article: https://nateybear.github.io/metrics-in-r/articles
