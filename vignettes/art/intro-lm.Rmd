@@ -99,7 +99,7 @@ The properties in `names(model)` represent the **internal** structure of the lin
 > `coef` is a **generic** function which extracts model coefficients from objects returned by modeling functions.
 </p>
 <p class="card-text">
-The idea of generics is a fundamental programming concept. The `coef` function is not just for linear models, it is for many, many types of models! Each type of model can choose how to **implement** the `coef` function using its **internal** structure, but we the users don't have to know or care how each model chooses to do that. We just need to call the `coef` function. It simplifies our lives by reducing the number of functions and amount of detail that we have to learn.
+The idea of generics is a fundamental programming concept. The `coef` function is not just for linear models, it is for many, many types of models! Generalized linear models, local linear models, LASSO or ridge models all implement this function. Each type of model can choose how to **implement** the `coef` function using its **internal** structure, but we the users don't have to know or care how each model chooses to do that. We just need to call the `coef` function. It simplifies our lives by reducing the number of functions and amount of detail that we have to learn.
 </p>
 </div>
 </div>
