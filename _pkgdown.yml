@@ -13,7 +13,8 @@ articles:
 - title: The Zen of Programming
   desc: Learn how to enjoy programming by following best practices accumulated over generations of Zen masters.
   contents:
-  - starts_with("zen/")
+  - zen/intro-zen
+  - zen/anatomy-1
 
 home:
   sidebar: FALSE

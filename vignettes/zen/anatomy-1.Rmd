@@ -1,0 +1,61 @@
+---
+title: "Anatomy of an R Project: Overview"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{anatomy-1}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, echo=F, message=F}
+library(metrics.in.r)
+library(here)
+```
+
+### The Pattern
+
+When you're doing an academic project, you want have a self-contained environment where you keep your data, write your scripts, and compile the finished product (a report, slides, etc.). In R, this concept is known as an R "project." Some patterns around R projects that I want to introduce you to in this writeup are
+
+-   How to create a project and what a project workflow looks like
+-   How to organize your files and refer to them consistently using the `here` package
+-   How to track your changes and share progress on GitHub
+-   How to track your dependencies with the `renv` package
+
+Each of these topics is worthy of a writeup in and of itself. Here I will give a high-level summary and action items for you to remember. In subsequent writeups I will dive further into an individual topic. You can take these in whatever order you want; come back here at the end to review the takeaways.
+
+### Always use R Projects
+
+Creating an R Project is nothing more than creating an `.Rproj` file. Each different thing you work on should be a different R project. The files themselves store configuration, like the GitHub URL where your project lives, but they are also just an important organizational concept. Open an R project by double-clicking on the `.Rproj` file, and RStudio loads your project in a "fresh" new window.
+
+Never just use the console when you are writing code. You can tinker in the console, but it eventually needs to be saved in a file so that you can reproduce it. Never save your workspace data on exit for this exact reason: If you spend hours and hours tinkering with something to get it perfect and never write down how you got it that way, how will you remember what you did when your peer/supervisor/journal editor asks for replication code?
+
+### Be Militant with File Structure
+
+Always make your file structure *self-evident*. Data, figures, and tables go in different folders. The R code to produce a given dataset/figure/table lives in a file whose name corresponds to the name of the thing it generates. It should be so obvious that your TA can open up your GitHub repository and give you a grade for your work without any explanation from you. For bonus points, use a build tool like a Makefile or `targets` file.
+
+Always use `here` to refer to files in your project. Refer to them **relative** to the base folder of your project. Doing it this way makes file references work *anywhere* in your project and for *anyone* who runs your code. Avoid absolute file references like the plague.
+
+### One `.Rproj` = One GitHub Repository
+
+Use GitHub. Students have free access to GitHub Pro and can create private repositories. The natural association between R Projects and GitHub repositories is one-to-one. Using the Git tab in RStudio makes it super easy to commit/push/pull with the click of a button.
+
+Consider using GitHub even if you aren't working with others or sharing the project publicly. It's like a ready-made backup of your code if your computer crashes or you're having other issues. If you do share the project publicly, think of GitHub as a coding résumé.
+
+### Lockfiles to Lock In Dependencies
+
+Using `renv` helps you keep track of what versions of R packages you are using. This helps reproducibility even more. You don't have to tell people which packages they need to install to run your code. When you install `renv` in a project, it will automatically activate itself each time you open the project. Remember to run `renv::snapshot()` every time your write new code.
+
+### Conclusion
+
+Project structure and management is the epitome of the Zen of Programming I mentioned in the intro article. Stay disciplined when you setup a project, write your code in R scripts, and keep the file structure of your project clean. Failure to do so can cause headaches, and headaches take away from our main goal of writing code and producing research.
+
+<hr>
+
+Happy coding!
