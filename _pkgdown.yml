@@ -3,9 +3,6 @@ template:
   bootstrap: 5
   bootswatch: journal
 articles:
-- title: Introduction
-  contents:
-  - metrics-in-r
 - title: The Art of Metrics
   desc: Learn how we use numerical programming skills to translate greek letters into R code and estimate all kinds of econometric models.
   contents:
@@ -14,7 +11,7 @@ articles:
   desc: Learn how to enjoy programming by following best practices accumulated over generations of Zen masters.
   contents:
   - zen/intro-zen
-  - zen/anatomy-1
+  - starts_with("zen/anatomy")
 
 home:
   sidebar: FALSE
@@ -35,7 +32,7 @@ navbar:
       aria-label: github
     intro:
       text: Get started
-      href: articles/metrics-in-r.html
+      href: articles/_metrics-in-r.html
     articles:
       text: Articles
       href: articles/index.html
