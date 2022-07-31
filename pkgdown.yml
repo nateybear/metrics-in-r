@@ -3,10 +3,10 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   intro-lm: art/intro-lm.html
-  metrics-in-r: metrics-in-r.html
   anatomy-1: zen/anatomy-1.html
+  anatomy-2: zen/anatomy-2.html
   intro-zen: zen/intro-zen.html
-last_built: 2022-07-31T16:05Z
+last_built: 2022-07-31T21:37Z
 urls:
   reference: https://nateybear.github.io/metrics-in-r/reference
   article: https://nateybear.github.io/metrics-in-r/articles
