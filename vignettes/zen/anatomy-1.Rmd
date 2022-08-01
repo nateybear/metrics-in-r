@@ -32,7 +32,7 @@ Each of these topics is worthy of a writeup in and of itself. Here I will give a
 
 ### Always use R Projects
 
-Creating an R Project is nothing more than creating an `.Rproj` file. Each different thing you work on should be a different R project. The files themselves store configuration, like the GitHub URL where your project lives, but they are also just an important organizational concept. Open an R project by double-clicking on the `.Rproj` file, and RStudio loads your project in a "fresh" new window.
+Creating an R Project is nothing more than creating an `.Rproj` file. Each different thing you work on should be a different R project. The files themselves store configuration, but they are also just an important organizational concept. Open an R project by double-clicking on the `.Rproj` file, and RStudio loads your project in a "fresh" new window.
 
 Never just use the console when you are writing code. You can tinker in the console, but it eventually needs to be saved in a file so that you can reproduce it. Never save your workspace data on exit for this exact reason: If you spend hours and hours tinkering with something to get it perfect and never write down how you got it that way, how will you remember what you did when your peer/supervisor/journal editor asks for replication code?
 
