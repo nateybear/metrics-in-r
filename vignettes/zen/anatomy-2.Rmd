@@ -56,7 +56,7 @@ Creating and using projects is part of a workflow that keeps you disciplined as 
 
 My philosophy on workflow is that RStudio is inherently an experimental thing. You can type code in the console, run it, inspect the output, and tinker with it until you are satisfied with the results. However, at that point, you need to WRITE IT DOWN in a file! Create a new R script and write down the exact commands from Step 1 to Step N, so that next time you open up a "fresh" RStudio window, you can click the "Source" button and your beautiful object will be replicated in your workspace just as it was before. This is the essence of reproducibility.
 
-Toward that end, I recommend disabling the "Save workspace to .RData on exit" setting in RStudio. This means that your workspace will be deleted every time you exit RStudio, and you cannot recover the variables that you were working with before. This is a good thing in my opinion, because it forces you to write everything down in scripts in such a way that you can always recover your work when you start a new session.
+Toward that end, I recommend disabling the "Save workspace to .RData on exit" setting in RStudio. You can access this setting by clicking on the project picker and selecting "Project Options" at the bottom of the menu. Disabling this setting means that your workspace will be deleted every time you exit RStudio, and you cannot recover the variables that you were working with before. This is a good thing in my opinion, because it forces you to write everything down in scripts in such a way that you can always recover your work when you start a new session.
 
 ### Conclusion
 
