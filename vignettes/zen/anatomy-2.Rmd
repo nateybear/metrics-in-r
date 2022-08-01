@@ -60,7 +60,7 @@ Toward that end, I recommend disabling the "Save workspace to .RData on exit" se
 
 ### Conclusion
 
-This guide was sort of an overview of what projects look like in R. As you might have realized, the appeal of R projects is that they enable a lot of the other features that I will talk about in subsequent articles. The pattern that we want to start thinking about is that projects are isolated, reproducible environments. They not only contain code and data files, but also "meta information" that makes it possible for others to download your code and data and reproduce your results. 
+This guide was sort of an overview of what projects look like in R. As you might have realized, part of the appeal of R projects is that they enable a lot of the other features that I will talk about in subsequent articles. The pattern that we want to start thinking about is that projects are isolated, reproducible environments. They not only contain code and data files, but also "meta information" that makes it possible for others to download your code and data and reproduce your results. 
 
 Along those lines, we should love and revel in the fact that RStudio is a wonderful environment to tinker and experiment. However, we should also have the discipline to realize that eventually, we need to write down the concrete steps that produce the results we have.
 
