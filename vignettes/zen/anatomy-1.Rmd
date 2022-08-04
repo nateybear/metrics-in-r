@@ -32,25 +32,25 @@ Each of these topics is worthy of a writeup in and of itself. Here I will give a
 
 ### Always use R Projects
 
-Creating an R Project is nothing more than creating an `.Rproj` file. Each different thing you work on should be a different R project. The files themselves store configuration, but they are also just an important organizational concept. Open an R project by double-clicking on the `.Rproj` file, and RStudio loads your project in a "fresh" new window.
+Creating an R Project is nothing more than creating an `.Rproj` file in a folder, and the folder is then considered an R Project by RStudio. Each different thing you work on should be a different R project. The files themselves store configuration, but they are also just an important organizational concept. Open an R project by double-clicking on the `.Rproj` file, and RStudio loads your project in a "fresh" new window.
 
-Never just use the console when you are writing code. You can tinker in the console, but it eventually needs to be saved in a file so that you can reproduce it. Never save your workspace data on exit for this exact reason: If you spend hours and hours tinkering with something to get it perfect and never write down how you got it that way, how will you remember what you did when your peer/supervisor/journal editor asks for replication code?
+When you are using RStudio, you can type R code into the console to experiment, or you can write code in a file and then "source" the file to run it. Never just use the console when you are writing code. You can tinker in the console, but it eventually needs to be saved in a file so that you can reproduce it. Never save your workspace data on exit for this exact reason: If you spend hours and hours tinkering with something to get it perfect and never write down how you got it that way, how will you remember what you did when your peer/supervisor/journal editor asks for replication code?
 
 ### Be Militant with File Structure
 
 Always make your file structure *self-evident*. Data, figures, and tables go in different folders. The R code to produce a given dataset/figure/table lives in a file whose name corresponds to the name of the thing it generates. It should be so obvious that your TA can open up your GitHub repository and give you a grade for your work without any explanation from you. For bonus points, use a build tool like a Makefile or `targets` file.
 
-Always use `here` to refer to files in your project. Refer to them **relative** to the base folder of your project. Doing it this way makes file references work *anywhere* in your project and for *anyone* who runs your code. Avoid absolute file references like the plague.
+The `here` package allows you to refer to files inside of your project in a consistent way. Always use `here` to refer to files in your project. Refer to them **relative** to the base folder of your project. Doing it this way makes file references work *anywhere* in your project and for *anyone* who runs your code. Avoid absolute file references like the plague.
 
 ### One `.Rproj` = One GitHub Repository
 
-Use GitHub. Students have free access to GitHub Pro and can create private repositories. The natural association between R Projects and GitHub repositories is one-to-one. Using the Git tab in RStudio makes it super easy to commit/push/pull with the click of a button.
+GitHub is a place to store your code. Use it. Students have free access to GitHub Pro and can create private repositories. The natural association between R Projects and GitHub repositories is one-to-one. Using the Git tab in RStudio makes it super easy to commit/push/pull with the click of a button.
 
 Consider using GitHub even if you aren't working with others or sharing the project publicly. It's like a ready-made backup of your code if your computer crashes or you're having other issues. If you do share the project publicly, think of GitHub as a coding résumé.
 
 ### Lockfiles to Lock In Dependencies
 
-Using `renv` helps you keep track of what versions of R packages you are using. This helps reproducibility even more. You don't have to tell people which packages they need to install to run your code. When you install `renv` in a project, it will automatically activate itself each time you open the project. Remember to run `renv::snapshot()` every time your write new code.
+Using `renv` helps you keep track of what versions of R packages you are using. This helps reproducibility even more. You don't have to tell people which packages they need to install to run your code. When you install `renv` in a project, it will automatically activate itself each time you open the project. Remember to run `renv::snapshot()` before you commit new code.
 
 ### Conclusion
 
@@ -58,4 +58,4 @@ Project structure and management is the epitome of the Zen of Programming I ment
 
 <hr>
 
-Happy coding!
+Happy Coding!

@@ -29,7 +29,7 @@ By clicking this dropdown, you can switch between projects or start a new one. G
 
 ![](../../man/figures/anatomy-2-newprojectscreen.png "The new project dialog")
 
-As you can see, there are multiple options when creating a new project. If you already have some code written in a folder, you can select "existing directory" to turn the folder into an R project. If you have a GitHub repository created, you can select "version control" to check out the project from git (see the article on git and GitHub for more info). If you're starting fresh, you can choose "new directory" to create a new folder. If you choose "new directory," the type of project you want to create is an R Project, and you probably want to check the boxes to create a git repository and use renv. I will cover both of these things in later articles.
+As you can see, there are multiple options when creating a new project. If you already have some code written in a folder, you can select "existing directory" to turn the folder into an R project. If you have a GitHub repository created, you can select "version control" to check out the project from git (see the article on git and GitHub for more info). If you're starting fresh, you can choose "new directory" to create a new folder. If you choose "new directory," you have a few more options to choose from. You want to select "New Project" as the project type, and I recommend checking the "git" and "renv" boxes. We'll cover these two things in later articles.
 
 <hr>
 
@@ -54,7 +54,9 @@ The configuration that is stored in these files is not very important. The impor
 
 Creating and using projects is part of a workflow that keeps you disciplined as a researcher. When you start fresh every time you open up RStudio, you are forced to write down your work in a file.
 
-My philosophy on workflow is that RStudio is inherently an experimental thing. You can type code in the console, run it, inspect the output, and tinker with it until you are satisfied with the results. However, at that point, you need to WRITE IT DOWN in a file! Create a new R script and write down the exact commands from Step 1 to Step N, so that next time you open up a "fresh" RStudio window, you can click the "Source" button and your beautiful object will be replicated in your workspace just as it was before. This is the essence of reproducibility.
+There are several ways to do your coding work in RStudio. In the console in the bottom left-hand corner, you can type a line of R code, hit enter, and immediately see the results. You can think of this as "instant feedback" to a line of code. Alternatively, you can create a new R file and write a series of commands in it in the top left-hand corner, then click the "Source" button and it will run all of the commands at once.
+
+My philosophy on workflow is that RStudio is inherently an experimental thing. You are invited to type code in the console, run it, inspect the output, and tinker with it until you are satisfied with the results. However, at that point, you need to WRITE IT DOWN in a file! Create a new R script and write down the exact commands from Step 1 to Step N, so that next time you open up a "fresh" RStudio window, you can click the "Source" button and your beautiful object will be replicated in your workspace just as it was before. This is the essence of reproducibility.
 
 Toward that end, I recommend disabling the "Save workspace to .RData on exit" setting in RStudio. You can access this setting by clicking on the project picker and selecting "Project Options" at the bottom of the menu. Disabling this setting means that your workspace will be deleted every time you exit RStudio, and you cannot recover the variables that you were working with before. This is a good thing in my opinion, because it forces you to write everything down in scripts in such a way that you can always recover your work when you start a new session.
 
@@ -66,4 +68,4 @@ Along those lines, we should love and revel in the fact that RStudio is a wonder
 
 <hr>
 
-Happy coding!
+Happy Coding!

@@ -41,4 +41,9 @@ There are many great resources for learning R and specific aspects of R. Here is
   - This book mirrors Jeffery Wooldridge's Introduction to Econometrics and uses R to demonstrate how to do each of the examples. Extremely helpful if you are using Wooldridge for your class.
 * [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham
   - What it says on the cover. If you already have some experience with R or programming in general, this is a deeper diver to learn how the language works under the hood.
+* [RStudio Cheatsheets](https://www.rstudio.com/resources/cheatsheets/): This is a constantly updated list of cheatsheets for popular packages. It's both a great reference and a great way to explore new topics.
+* [ggplot2: The Book](https://ggplot2-book.org/) by Hadley Wickham
+  - A whole book about plotting. Enough said.
+* [R Markdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/) by Yihui Xie, J. J. Allaire, Garrett Grolemund
+  - A comprehensive book about how to communicate your findings with "literate programming." Also a good reference text if you're working with R Markdown.
 
