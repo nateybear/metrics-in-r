@@ -21,7 +21,9 @@ _Introduction to Econometrics_ with R follows Jeffery Wooldridge's textbook of t
 
 _R for Data Science_ is a broad overview of R and the tidyverse (a collection of packages within R). It starts slow at a beginner level and eventually covers a vast array of important concepts. It's highly recommended (perhaps required) reading for new R programmers. This website partly assumes the background information contained in _R for Data Science_ and builds on it with specific recommendations for econometrics and academic research.
 
-<p class="lead">With that said, there are three purposes of this package:</p>
+<hr>
+
+With that said, there are three purposes of this package:
 
 ## 1. Metapackage
 

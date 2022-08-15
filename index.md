@@ -28,9 +28,9 @@ website partly assumes the background information contained in *R for
 Data Science* and builds on it with specific recommendations for
 econometrics and academic research.
 
-<p class="lead">
+<hr>
+
 With that said, there are three purposes of this package:
-</p>
 
 ## 1. Metapackage
 
