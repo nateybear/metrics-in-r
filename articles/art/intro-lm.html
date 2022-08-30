@@ -98,8 +98,7 @@
 <span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> 11.5  -<span style="color: #BB0000;">0.338</span>    12     1     0     0     0     9       14       12        0</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># … with 1,220 more rows, and 12 more variables: sibs &lt;dbl&gt;, urban &lt;dbl&gt;,</span></span></span>
 <span><span class="co">#&gt; <span style="color: #949494;">#   ne18 &lt;dbl&gt;, nc18 &lt;dbl&gt;, south18 &lt;dbl&gt;, west18 &lt;dbl&gt;, urban18 &lt;dbl&gt;,</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;">#   tuit17 &lt;dbl&gt;, tuit18 &lt;dbl&gt;, lwage &lt;dbl&gt;, expersq &lt;dbl&gt;, ctuit &lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #949494;"># ℹ Use `print(n = ...)` to see more rows, and `colnames()` to see all variable names</span></span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #949494;">#   tuit17 &lt;dbl&gt;, tuit18 &lt;dbl&gt;, lwage &lt;dbl&gt;, expersq &lt;dbl&gt;, ctuit &lt;dbl&gt;</span></span></span></code></pre></div>
 <div class="card text-bg-secondary mb-3">
 <div class="card-header">
 More on data frames
@@ -271,16 +270,16 @@ The idea of generics is a fundamental programming concept. The <code>coef</code>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 10 × 4</span></span></span>
 <span><span class="co">#&gt;     nc18  ne18 south18 west18</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     0     0       1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span>     0     0       0      1</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span>     1     0       0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     0     0       1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span>     1     0       0      0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span>     0     0       1      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     0     0       1      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     0     0       1      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     0     0       1      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span>     1     0       0      0</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span>     0     0       0      1</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span>     1     0       0      0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span>     1     0       0      0</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span>     1     0       0      0</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     1     0       0      0</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span>     0     1       0      0</span></span></code></pre></div>
 <p>The code above is selecting the four columns and then picking 10 random rows. It’s just to demonstrate that these four columns take on mutually exclusive values of one or zero.</p>
 <p>We can convert this to one column with the <em>categorical</em> value of region. One way to do that is to use the <code><a href="https://dplyr.tidyverse.org/reference/case_when.html" class="external-link">case_when()</a></code> function:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
@@ -299,13 +298,13 @@ The idea of generics is a fundamental programming concept. The <code>coef</code>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 1</span> North-Central</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 2</span> North-Central</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 3</span> Northeast    </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> West         </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 4</span> North-Central</span></span>
 <span><span class="co">#&gt; <span style="color: #BCBCBC;"> 5</span> North-Central</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> South        </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> West         </span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> North-Central</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> North-Central</span></span>
-<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> Northeast</span></span></code></pre></div>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 6</span> North-Central</span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 7</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 8</span> South        </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;"> 9</span> Northeast    </span></span>
+<span><span class="co">#&gt; <span style="color: #BCBCBC;">10</span> South</span></span></code></pre></div>
 <p>Now when we create a linear model using the region variable, R will create dummies for us!</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">wage</span> <span class="op">~</span> <span class="va">region</span>, data <span class="op">=</span> <span class="va">htv</span><span class="op">)</span></span>
