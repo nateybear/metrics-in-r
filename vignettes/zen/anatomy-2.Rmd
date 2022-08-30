@@ -23,11 +23,11 @@ library(here)
 
 The project picker is in the top-right corner of RStudio:
 
-![](../../man/figures/anatomy-2-projectpicker.png "This is where you click to switch between projects or start a new one.")
+![](./img/anatomy-2-projectpicker.png "This is where you click to switch between projects or start a new one.")
 
 By clicking this dropdown, you can switch between projects or start a new one. Go ahead and click "New Project." You should see this dialog box pop up:
 
-![](../../man/figures/anatomy-2-newprojectscreen.png "The new project dialog")
+![](./img/anatomy-2-newprojectscreen.png "The new project dialog")
 
 As you can see, there are multiple options when creating a new project. If you already have some code written in a folder, you can select "existing directory" to turn the folder into an R project. If you have a GitHub repository created, you can select "version control" to check out the project from git (see the article on git and GitHub for more info). If you're starting fresh, you can choose "new directory" to create a new folder. If you choose "new directory," you have a few more options to choose from. You want to select "New Project" as the project type, and I recommend checking the "git" and "renv" boxes. We'll cover these two things in later articles.
 
@@ -35,13 +35,13 @@ As you can see, there are multiple options when creating a new project. If you a
 
 I created a project using the "New Directory" option and called it test. A screenshot of what my RStudio looked like afterwards is below. When you open a new project, you should see the RStudio window refresh, and you will have a "clean" instance of R. You environment tab will be empty, and your files tab will be open to wherever your project lives on your computer. The project picker will now show the name of your new project, and you should see one (or many) new files created. The most important file for right now is the `.Rproj` file that got created. We'll discuss this file next.
 
-![](../../man/figures/anatomy-2-newprojectchanges.png "What the window looks like after creating a new project.")
+![](./img/anatomy-2-newprojectchanges.png "What the window looks like after creating a new project.")
 
 ### What Actually *Is* an R Project?
 
 The way that RStudio knows that your folder is an R project is because it has an `.Rproj` file. The file itself just stores some very minimal configuration. Here's an example `.Rproj` file from one of my projects on GitHub:
 
-![](../../man/figures/anatomy-2-rprojfile.png "A screenshot of an Rproj file")
+![](./img/anatomy-2-rprojfile.png "A screenshot of an Rproj file")
 
 The configuration that is stored in these files is not very important. The importance is mainly that it signals to RStudio that *this folder is a project*. With that signal to RStudio come many benefits, described below. We touched on the first point already, and each of the subsequent points will be covered in depth in later articles.
 
