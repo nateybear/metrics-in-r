@@ -145,7 +145,7 @@ Now we navigate over to the `git` tab in the upper right corner of RStudio and w
 ![](img/anatomy-4-ghfirst-2.png)
 ![](img/anatomy-4-ghfirst-3.png)
 
-A new window pops up that let's us review what we are committing. On the left-hand side, we can click through all of the files that are being committed and see what has changed. On the right-hand side, we add a short message that describes the nature of the commit. For your first commit, it's fine to just write "initial commit." Click the "Commit" button right below the commit message, and congratulations! You have just made your first commit.
+A new window pops up that lets us review what we are committing. On the left-hand side, we can click through all of the files that are being committed and see what has changed. On the right-hand side, we add a short message that describes the nature of the commit. For your first commit, it's fine to just write "initial commit." Click the "Commit" button right below the commit message, and congratulations! You have just made your first commit.
 
 ![](img/anatomy-4-ghfirst-4.png)
 
