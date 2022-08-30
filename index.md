@@ -12,13 +12,27 @@ Hanck, Martin Arnold, Alexander Gerber, and Martin Schmelzer; and [R for
 Data Science](https://r4ds.had.co.nz/) by Hadley Wickham and Garrett
 Grolemund.
 
-*Introduction to Econometrics* with R follows Jeffery Wooldridge’s
+<div class="card">
+
+<div class="card-body">
+
+*Introduction to Econometrics with R* follows Jeffery Wooldridge’s
 textbook of the same name and shows how to implement selected
 applications. Most intro econometrics classes will cover only portions
 of Wooldridge and sometimes stray quite far from the material. Hence,
 this website tries to be a concise complement to *Introduction to
 Econometrics with R*, offering up practical tools for the different
 things I have seen covered in metrics courses.
+
+</div>
+
+</div>
+
+<br/>
+
+<div class="card">
+
+<div class="card-body">
 
 *R for Data Science* is a broad overview of R and the tidyverse (a
 collection of packages within R). It starts slow at a beginner level and
@@ -28,18 +42,22 @@ website partly assumes the background information contained in *R for
 Data Science* and builds on it with specific recommendations for
 econometrics and academic research.
 
-<hr>
+</div>
 
-With that said, there are three purposes of this package:
+</div>
 
-## 1. Metapackage
+<br/>
+
+## Purpose of the Package
+
+### 1. Metapackage
 
 A metapackage is a package that contains other packages. When you
 install this package, you will also install a curated list of packages
 that I have created. I feel this is the fastest way to get you “set up”
 with a complete environment where you can do your econometrics in R.
 
-## 2. Documentation
+### 2. Documentation
 
 The series of articles on this website are created from TA review
 sessions where I covered important aspects of programming in R. There
@@ -60,7 +78,7 @@ are two sections:
     management that help you produce high-quality, shareable, and
     understandable academic research.
 
-## 3. Code
+### 3. Code
 
 There are a few things that are complicated to program, and in those
 cases I try to write my own functions for you to use. You’re free to use
