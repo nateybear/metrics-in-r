@@ -19,6 +19,7 @@ Depends:
     ggthemes,
     ivreg,
     janitor,
+    kable,
     kableExtra,
     lmtest,
     lubridate,
@@ -36,6 +37,7 @@ Imports:
     sandwich,
     stats
 Suggests: 
+    estimatr,
     knitr,
     rmarkdown
 VignetteBuilder: knitr

@@ -6,7 +6,8 @@ articles:
 - title: The Art of Metrics
   desc: Learn how we use numerical programming skills to translate greek letters into R code and estimate all kinds of econometric models.
   contents:
-  - starts_with("art/")
+  - art/intro-lm
+  - art/robust-ses
 - title: The Zen of Programming
   desc: Learn how to enjoy programming by following best practices accumulated over generations of Zen masters.
   contents:

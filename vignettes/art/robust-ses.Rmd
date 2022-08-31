@@ -1,0 +1,119 @@
+---
+title: "Robust Standard Errors"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Robust Standard Errors}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Congrats! You've managed to make a linear model in R, but the immediate problem that us economists face is that we want robust standard errors. R doesn't provide this out of the box, so we have to use a package that will compute robust standard errors for us. Luckily, this is quite easy to do, and we'll run through it here in this article.
+
+## `sandwich` does it all
+
+The `sandwich` R package is a Swiss army knife that can do a lot for you when it comes to robust standard errors. It's called "sandwich" because most variance estimators tend to have a form that looks like a sandwich: that's the $Q_{XX}Q_{u^2XX}Q_{XX}$ form you may be familiar with. Either way, I think it's a cute name.
+
+Let's recreate the model that we used in the intro article.
+
+```{r, message = F}
+library(tidyverse)
+library(haven)
+
+htv <- read_dta(system.file("HTV.DTA", package = "metrics.in.r"))
+model <- lm(wage ~ educ * abil, data = htv)
+```
+
+Now we load the sandwich package.
+
+```{r}
+library(sandwich)
+```
+
+There are a few different functions in sandwich, which correspond to the different types of robust variance estimators: `vcovHC` for the classic "White's" (heteroskedasticity-consistent) standard errors; `vcovCL` for clustered standard errors; and `vcovBS` for boostrapped standard errors. Making a covariance matrix of our $\beta$ estimates for a given regression model is as easy as calling `vcovHC` on the model. The `type` argument is optional: There are different types of "corrections" for heteroskedasticity-robust standard errors, and HC1 is the correction that Stata uses by default.
+
+```{r}
+vcovHC(model, type = "HC1")
+```
+
+From now on, I'll omit the `type` argument to keep my R code cleaner. Once we have the robust covariance matrix, we can get the robust standard errors of our $\beta$ estimates by taking the square root of the diagonal:
+
+```{r}
+sqrt(diag(vcovHC(model)))
+```
+
+Another way to do this is with the pipe operator:
+
+```{r, eval=F}
+model %>% vcovHC %>% diag %>% sqrt
+```
+
+I won't explain the pipe operator now. I prefer you to have an "immersive" introduction for now, and I will cover it more in-depth later. Just notice that it sort of "unwraps" the nested function calls and reverses the order of the calls.
+
+## But what about the pretty tables
+
+Recall that in the intro article we could do this with our model and get a nice summary table
+
+```{r}
+summary(model)
+```
+
+This summary table was generated with a homoskedastic assumption on the variance of the residuals, so we need to figure something else out for our robust standard errors. Luckily, there is a package called `lmtest` which provides this functionality. We call the `coeftest` function and give it both our model and a covariance matrix, and it will print a nice summary table like above:
+
+```{r}
+library(lmtest, quietly = TRUE)
+
+coeftest(model, vcov. = vcovHC(model))
+```
+
+Again, with the pipe this would look like
+
+```{r, eval=F}
+model %>% coeftest(vcov. = vcovHC(.))
+```
+
+So we have to expend a little more effort to get the covariance matrix of our $\beta$ estimates, but once we have both the model and our covariance matrix, we can make a summary table. In fact, we really could do this ourselves. I'm going to give a demonstration below that all we _need_ for these summary tables is a model and a covariance matrix. Let's replicate the output of `coeftest`—you don't need to understand what I'm doing, just notice that the only objects that I'm using are the model and the covariance matrix.
+
+```{r}
+estimate <- coef(model)
+std_error <- model %>% vcovHC %>% diag %>% sqrt
+t_value <- estimate / std_error
+p_value <- 2 * pt(-abs(t_value), df = df.residual(model))
+
+cbind(estimate, std_error, t_value, p_value)
+```
+
+## There are easier alternatives
+
+Since this is R and there are a lot of people using it, it makes sense that someone has written something to make robust standard errors easier. Two people have in fact.
+
+The first is the `lm_robust` function from the `estimatr` package. You specify the covariance type when you create your model, and then the `summary` function will use the correct type of robust standard errors in its output:
+
+```{r}
+library(estimatr)
+
+model <- lm_robust(wage ~ educ * abil, data = htv, se_type = "HC1")
+
+summary(model)
+```
+
+The second (and preferred) method is the `feols` function from the `fixest` package. Just like `lm_robust`, you specify the covariance type when you create your model:
+
+```{r}
+library(fixest)
+
+model <- feols(wage ~ educ * abil, data = htv, vcov = "HC1")
+
+summary(model)
+```
+
+**A word of warning**: There are issues computing clustered standard errors with `lm_robust`. In general, I don't trust the results that `lm_robust` give as much as I trust `sandwich` or `fixest`. Keep that in mind and choose wisely. I show you `lm_robust` because there are still many people that use it. You should convince them to switch over to `fixest` 🙂
+
+## Conclusion: Why'd you show me the hard way?
+
+Two reasons why I showed the `sandwich` and `coeftest` method. One is that I want to demystify a little bit of what is going on behind the scenes. You only need a _model_ and a _covariance matrix_. Once you have those, you can compute standard errors, t statistics, and p values. I prefer using `sandwich` exactly for this reason: I don't like "magic" and functions that do too much for me without me realizing what is going on.
+
+The second reason is that the `sandwich` and `coeftest` method remains enduringly popular. `lm_robust` had a moment of fame, and `fixest` is up and coming as a very popular library in econometrics, but sometimes you just want a simple, tried-and-true method. You can choose for yourself which method you'd like to use.
+
+<hr/>
+
+Happy Coding!
