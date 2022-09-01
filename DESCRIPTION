@@ -19,7 +19,6 @@ Depends:
     ggthemes,
     ivreg,
     janitor,
-    kable,
     kableExtra,
     lmtest,
     lubridate,
