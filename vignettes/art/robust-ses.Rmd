@@ -59,9 +59,10 @@ summary(model)
 
 This summary table was generated with a homoskedastic assumption on the variance of the residuals, so we need to figure something else out for our robust standard errors. Luckily, there is a package called `lmtest` which provides this functionality. We call the `coeftest` function and give it both our model and a covariance matrix, and it will print a nice summary table like above:
 
+```{r, message = F, warning=F}
+library(lmtest)
+```
 ```{r}
-library(lmtest, quietly = TRUE)
-
 coeftest(model, vcov. = vcovHC(model))
 ```
 
