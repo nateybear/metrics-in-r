@@ -33,7 +33,7 @@ navbar:
       aria-label: github
     intro:
       text: Get started
-      href: articles/_metrics-in-r.html
+      href: articles/metrics-in-r.html
     articles:
       text: Articles
       href: articles/index.html
