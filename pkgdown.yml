@@ -3,13 +3,14 @@ pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   intro-lm: art/intro-lm.html
+  rmarkdown-intro: art/rmarkdown-intro.html
   robust-ses: art/robust-ses.html
   anatomy-1: zen/anatomy-1.html
   anatomy-2: zen/anatomy-2.html
   anatomy-3: zen/anatomy-3.html
   anatomy-4: zen/anatomy-4.html
   intro-zen: zen/intro-zen.html
-last_built: 2022-09-02T16:13Z
+last_built: 2022-09-14T16:09Z
 urls:
   reference: https://nateybear.github.io/metrics-in-r/reference
   article: https://nateybear.github.io/metrics-in-r/articles
