@@ -1,6 +1,6 @@
 Package: metrics.in.r
 Title: Do Your Econometrics Homework in R
-Version: 0.1.0
+Version: 0.2.0
 Authors@R: 
     person("Nathan", "Gardner Hattersley", , "nhattersley@utexas.edu", role = c("aut", "cre"))
 Description: This is a metapackage and set of vignettes for helping econometrics students do their homework in R. It contains information about how to do basic econometrics in R, as well as information on how to create reproducible research.
@@ -17,26 +17,27 @@ Depends:
     broom,
     fixest,
     ggthemes,
+    haven,
+    here,
     ivreg,
     janitor,
     kableExtra,
+    knitr,
     lmtest,
     lubridate,
+    quantreg,
+    renv,
+    sandwich,
     skimr,
     snakecase,
     tidyverse
 Imports: 
+    cli,
     glue,
-    haven,
-    here,
     magrittr,
-    quantreg,
-    renv,
     rlang,
-    sandwich,
     stats
 Suggests: 
     estimatr,
-    knitr,
     rmarkdown
 VignetteBuilder: knitr
