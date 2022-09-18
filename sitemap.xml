@@ -42,4 +42,19 @@
   <url>
     <loc>https://nateybear.github.io/metrics-in-r/reference/index.html</loc>
   </url>
+  <url>
+    <loc>https://nateybear.github.io/metrics-in-r/reference/lincom.html</loc>
+  </url>
+  <url>
+    <loc>https://nateybear.github.io/metrics-in-r/reference/nlcom.html</loc>
+  </url>
+  <url>
+    <loc>https://nateybear.github.io/metrics-in-r/reference/pipe.html</loc>
+  </url>
+  <url>
+    <loc>https://nateybear.github.io/metrics-in-r/reference/test.html</loc>
+  </url>
+  <url>
+    <loc>https://nateybear.github.io/metrics-in-r/reference/testnl.html</loc>
+  </url>
 </urlset>
