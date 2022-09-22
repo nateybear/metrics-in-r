@@ -47,22 +47,5 @@ print.postEstimation <- function(x, ...) {
 }
 
 #' @export
-#' @importFrom knitr knit_print
-knit_print.postEstimation <- function(x, ...) {
-  table <- summaryTable(x)
-  if (is.character(table)) {
-    NextMethod("print")
-  } else {
-    out <- knitr::knit_print(table, ...)
-    if (!is.null(x$params)) {
-      model_names <- names(stats::coef(x$model))
-      conversions <- glue::glue("{x$params}={model_names}") %>% paste0(collapse = ", ")
-      out <- c(out, "\n", glue::glue("Where {conversions}"))
-    }
-    return(knitr::asis_output(out))
-  }
-}
-
-#' @export
 #' @importFrom stats df.residual
 df.residual.fixest <- function(object, ...) object$nobs - object$nparams
