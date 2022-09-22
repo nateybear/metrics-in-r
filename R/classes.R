@@ -11,7 +11,7 @@ postEstimation <- function(clazz) {
       names(coefs) <- params
     }
 
-    # homoskedastic vcov. by default, or pass one in as a matrix or function
+    # generic stats::vcov by default, or pass one in as a matrix or function
     V <- if (is.null(vcov.)) {
       stats::vcov(model)
     } else if (is.matrix(vcov.)) {
