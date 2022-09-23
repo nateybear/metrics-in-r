@@ -49,10 +49,10 @@ creating the model. You can override this default behavior by using the
 library(fixest)
 model <- feols(mpg ~ wt + hp, data = mtcars, vcov = "HC1")
 
-nlcom(model, wt^2, sqrt(hp/wt))
+nlcom(model, wt^2, sqrt(hp / wt))
 
 # equivalently, supply your own parameter names
 library(glue)
-nlcom(model, b2^2, sqrt(b3/b2), params = glue("b{1:3}"))
+nlcom(model, b2^2, sqrt(b3 / b2), params = glue("b{1:3}"))
 
 }
