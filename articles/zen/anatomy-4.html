@@ -74,8 +74,6 @@
 
     
     
-<pre><code><span><span class="co">#&gt; Warning: S3 method 'knit_print.postEstimation' was declared in NAMESPACE but not</span></span>
-<span><span class="co">#&gt; found</span></span></code></pre>
 <div class="section level2">
 <h2 id="the-pattern">The Pattern<a class="anchor" aria-label="anchor" href="#the-pattern"></a>
 </h2>
@@ -112,11 +110,11 @@
 <div class="accordion-body">
 <p>What’s interesting about commands in the terminal is that they are just files! There is a special type of file in operating systems called an executable file. The first word of the command you type in the terminal is the name of the file, and the rest of the words you type are given to the file as separate values called command arguments or simply “args.”</p>
 <p>As an example, one command that we will type in a second is <code>git push --set-upstream</code>. This means to run the <code>git</code> file, and run it with two args: <code>push</code> and <code>--set-upstream</code>. The command line finds the <code>git</code> file by looking somewhere called the PATH. Try typing this in your shell:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$PATH</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /opt/hostedtoolcache/Python/3.8.13/x64/bin:/opt/hostedtoolcache/Python/3.8.13/x64:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin</span></span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">echo</span> <span class="va">$PATH</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /opt/hostedtoolcache/Python/3.8.13/x64/bin:/opt/hostedtoolcache/Python/3.8.13/x64:/home/linuxbrew/.linuxbrew/bin:/home/linuxbrew/.linuxbrew/sbin:/home/runner/.local/bin:/opt/pipx_bin:/home/runner/.cargo/bin:/home/runner/.config/composer/vendor/bin:/usr/local/.ghcup/bin:/home/runner/.dotnet/tools:/snap/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin</span></span></code></pre></div>
 <p>This is all the folders your terminal will search for the executable file, in order, separated by colons. If you would like to see where the terminal found the <code>git</code> executable file, you can use the <code>which</code> command:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> git</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /usr/bin/git</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">which</span> git</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; /usr/bin/git</span></span></code></pre></div>
 <p>Since R scripts are files, you might naturally wonder if you can run R scripts like this in the terminal. The answer is yes: see <a href="https://riffomonas.org/code_club/2020-08-20-R-scripting" class="external-link">this tutorial</a> for some more explanation. I don’t generally recommend doing this, since it can be confusing for others to understand what you’re doing.</p>
 </div>
 </div>
