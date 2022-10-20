@@ -2,20 +2,29 @@
 #' @importFrom sandwich vcovBS
 #' @importFrom mosaic do resample
 vcovBS.rqs <- function(x, cluster = NULL, R = 250) {
+  coefnames <- names(normalized_coef(model))
   fit_model <- function(m, data) {
     normalized_coef(quantreg::rq(m$formula, data, tau = m$tau))
   }
 
-  stats::cov(do(R) * fit_model(x, resample(data, groups = cluster)))
+  do_resample <- function() {
+    rlang::eval_tidy(rlang::expr(resample(data, groups = !!cluster)))
+  }
+
+  stats::cov(do(R) * fit_model(x, do_resample())) %>%
+    magrittr::set_colnames(coefnames) %>%
+    magrittr::set_rownames(coefnames)
 }
 
 #' @export
 normalized_coef <- function(model) {
   t <- as.numeric(stats::coef(model))
 
+  pull_tau <- . %>% stringr::str_match("tau= (.*)") %>% magrittr::extract(,2)
+
   stats::coef(model) %>%
     {expand.grid(rownames(.), colnames(.))} %>%
-    glue::glue_data("{Var1}[{Var2}]") %>%
+    glue::glue_data("{Var1}[{pull_tau(Var2)}]") %>%
     rlang::set_names(t, .)
 }
 

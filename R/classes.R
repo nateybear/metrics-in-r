@@ -6,7 +6,7 @@
 postEstimation <- function(clazz) {
   function(model, ..., vcov. = NULL, params = NULL) {
     # if different names are supplied via params, use them
-    coefs <- stats::coef(model)
+    coefs <- normalized_coef(model)
     if (!is.null(params)) {
       names(coefs) <- params
     }
