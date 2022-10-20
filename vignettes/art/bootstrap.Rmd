@@ -1,0 +1,223 @@
+---
+title: "Bootstrap and Quantile Regression"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Bootstrap and Quantile Regression}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+if("metrics.in.r" %in% (.packages())){
+  detach("package:metrics.in.r", unload=TRUE) 
+}
+```
+
+## The Idea: A Bit of Magic
+
+When you first learn about the bootstrap, it may seem a little magical. You seem to get a lot for free, in that you *only* need to resample your data a bunch of times in order to get a sampling distribution of any statistic you like. I want to emphasize two points, and then we'll move onto coding.
+
+### The "Sample Analogue" and WLLN
+
+When you bootstrap something, what you get back is a bunch of numbers. Those numbers are a random sample from a distribution! For example, when you bootstrap OLS coefficients, what you get from the bootstrap process is a random sample from the distribution of your $\beta$s. So to "conduct inference" on the $\beta$s, we just need to ask questions about this sample of $\beta$s that we're given. This a fundamentally different way of doing statistical inference than the classical way of saying that $\beta$s are normally distributed with some distribution and then using critical values from the standard normal to accept/reject a hypothesis.
+
+The law of large numbers along with the continuous mapping theorem gives us a lot of power. This basically tells us that we can take the average value of some function $g$ in our data, and this is a good estimate of the true value of $g$ in the entire population. Formally we write
+
+$$
+\frac{1}{N} \sum_{i=1}^N g(X_i) \overset{p}\rightarrow E(g(X))
+$$
+
+I also want to point out that this **sample analogue** technique intuitively applies to other situations. The sample median is a pretty good guess of the population median. The 5%-95% interval in our data is a pretty good estimate of that 90% interval in the population. 
+
+Let's make this more concrete. Say we are bootstrapping OLS coefficients from some regression. Then we can think of our random sample as a random sample of $\beta$s from the *true distribution* of $\beta$s. We can construct estimates of the "turning point" of mage from Problem Set 2 as
+
+$$
+\theta_i \equiv -\beta_{mage}^i/(2\beta_{magesq}^i)
+$$
+
+And now we can think of these $\theta_i$ as samples from the *true distribution* of the turning point. If we take the mean, this is an estimate of the mean value of the turning point, and we can construct confidence intervals using the $\alpha/2$ and $1-\alpha/2$ quantiles of the bootstrap samples.
+
+Conclusion: With bootstrapping, you are generating a random sample of a *statistic* from a finite amount of data. This is the magic of resampling. To emphasize the generality, let me expand your idea of a statistic.
+
+### Bootstrap Works for Any Statistic
+
+**Defintion:** A statistic is a function that takes in a sample of data and returns *something*. What that something is is very general. You can think about a statistic as an OLS coefficient (data in, linear regression out), or sample mean, or sample variance. 
+
+But you can also think bigger: nonparametric statistics, like kernel regression estimators, machine learning models... you don't have to return a number, you can return a function, a data structure, basically anything that you can program. It truly doesn't matter, if you can think of *any* sort of thing that takes in data and produces some output, then you can use the bootstrap to quantify the *amount of uncertainty* in the output.
+
+## How to Code It
+
+As an example: We want to bootstrap the median wage in the HTV dataset.
+
+Since bootstrapping is conceptually straightforward, there's nothing stopping you from doing it yourself. You just need a for loop:
+
+```{r, warning = FALSE, message = FALSE}
+library(haven)
+library(tidyverse)
+
+# Read in the data
+data <- read_dta(system.file("HTV.DTA", package = "metrics.in.r"))
+
+wage <- data$wage
+
+n <- length(wage)
+
+# make a vector to hold the output
+median_samples <- numeric()
+for (i in 1:1000) {
+    wage_resample <- wage[sample(1:n, n, replace = TRUE)]
+    median_samples[i] <- median(wage_resample)
+}
+
+# plot a histogram of the output
+hist(median_samples, prob = TRUE)
+curve(dnorm(x, mean(median_samples), sd(median_samples)), add = TRUE)
+```
+
+I overlayed a normal curve in the output above to show you that the median doesn't look very normal! This might suggest that we would be better suited using the boostrap to answer statistical questions about it.
+
+### There are packages for that
+
+One package that I really like for bootstrapping is `mosaic`. It add special syntax for doing stats that feels pretty intuitive. You can read more about it [here](https://www.mosaic-web.org/mosaic/articles/Resampling.html).
+
+The equivalent code for mosaic looks like this:
+
+```{r, message = FALSE}
+library(mosaic)
+
+median_samples <- do(1000) * median(resample(wage))
+```
+
+There's another package that I learned before mosaic called `boot`. It has a function called `boot` that works slightly differently. You give it the data to resample, and a function to compute the statistic. Documentation [here](https://www.rdocumentation.org/packages/boot/versions/1.3-28/topics/boot). What it would look like is:
+
+```{r, message = FALSE}
+library(boot)
+
+boot(wage, function(data, i) median(data[i]), R = 1000)
+```
+
+Notice that it doesn't return a numeric vector like mosaic or the DIY versions, but instead a "boot object" that will print a summary of the bootstrap procedure.
+
+## Enter Quantile Regression
+
+Why talk about quantile regression and bootstrap in the same article? Because quantile regression is a great example of something that is much easier to bootstrap than to do classical statistics.
+
+Quantile regression can be done in R using the `quantreg` package. It was written by Roger Koenker, one of the fathers of quantile regression.
+
+You can create a quantile regression model much like a linear model in R, but the appropriate function is `rq`. It also takes an additional argument, `tau`, which are the quantiles that you want to estimate.
+
+Let's create a quantile regression model that looks at the effects of education, ability, and experience on wage at two different quantiles:
+
+```{r, message = F}
+library(quantreg)
+
+model <- rq(wage ~ educ + abil + exper, data = data, tau = c(0.25, 0.75))
+
+model
+```
+
+### It's a matrix? What's the variance of a matrix?
+
+Our coefficient estimates are now stored in a matrix! Our OLS coefficients were a vector, so we've added a dimension here for each `tau`. Random matrices are kind of a complicated thing. It's easier to think about a $m\times n$ random matrix as a $m*n$ length vector. That way, the covariance matrix of quantile regression coefficients is a $(m*n)\times (m*n)$-dimensional matrix.
+
+Surely Roger Koenker, the father of quantile regression, realizes this.
+
+```{r, error = TRUE}
+vcov(model)
+```
+
+Well, it's not great that it doesn't provide a `vcov` implementation out of the box. At least he provides a summary method for the models:
+
+```{r}
+summary(model)
+```
+
+**The Problem**: The package doesn't compute covariances *across quantiles*. So there is no way for us to do post-estimation like `testnl` or `lincom`. Let's step back and discuss the way forward.
+
+## Matrix Gumming up the Machinery
+
+The fundamental problem is that our coefficients being a matrix is a scenario that none of our tools have accounted for.
+
+Sandwich tends to be very flexible to the type of model, but with quantile regressions it messes up the dimensions in one of the matrix multiplications:
+
+```{r, warning = FALSE, error = TRUE}
+library(sandwich)
+vcovBS(model)
+```
+
+Mosaic also has some nice tools for bootstrapping models, but it doesn't quite work for quantile regressions either. Compare this:
+
+```{r, warning = FALSE, cache = TRUE}
+mosaic_out <- do(1000) * lm(wage ~ educ + abil + exper, data = resample(data))
+confint(mosaic_out)
+```
+
+To this:
+
+```{r, warning = FALSE, error = TRUE, cache = TRUE}
+mosaic_out <- do(1000) * rq(
+    wage ~ educ + abil + exper,
+    data = resample(data),
+    tau = c(0.25, 0.75)
+)
+confint(mosaic_out)
+```
+
+It's clear that we have to be a little inventive about our coding in order to make quantile regression work like the linear regression that we're used to.
+
+## Solution 1: Change What You're bootstrapping
+
+On the one hand, you'll probably be interested in some specific function of the $\beta$s, so you can change what you're bootstrapping. That makes it amenable to using mosaic to conduct inference. For example, you might be interested in the difference in returns to experience for the 75th percentile of earners as opposed to the 25th. In other words, you care about the value of $\beta_{exper(0.75)} - \beta_{exper(0.25)}$. You could just bootstrap it:
+
+```{r, cache = TRUE, warning = FALSE}
+diff_pe_exper <- function(data) {
+    model <- rq(wage ~ abil + exper + educ, data = data, tau = c(0.25, 0.75))
+    pe_exper_0.25 <- coef(model)["exper", "tau= 0.25"]
+    pe_exper_0.75 <- coef(model)["exper", "tau= 0.75"]
+    return(pe_exper_0.75 - pe_exper_0.25)
+}
+
+diff_pe_expers <- do(1000) * diff_pe_exper(resample(data))
+
+confint(diff_pe_expers)
+```
+
+The output tells us that expected returns to experience are about 20 to 60 cents higher for higher earners than lower earners, HAEF. This solution is pretty straightforward, as long as you know *a priori* what function of the $\beta$s you're interested in.
+
+## Solution 2: Implement a new `vcov` function
+
+If you're a big fan of `test`, `lincom`, and friends, then the above solution won't work for you. You're still lacking a way to get a variance matrix of your $\beta$s. Here's where I help you out. If you load the `metrics.in.r` package, I implement new default methods to get the covariance matrix of a quantile regression model. It's not super fancy, it just converts the matrix of coefficients into a vector of coefficients, like this:
+
+```{r, message = F}
+library(metrics.in.r)
+
+normalized_coef(model)
+```
+
+Then when you run `vcov` on the model, those are the names in the covariance matrix. Use the `R` parameter to change the number of bootstrap iterations:
+
+```{r, warning = FALSE}
+vcov(model, R = 100)
+```
+
+**Putting it all together**: With this machinery in place, we can use the `lincom` command to run the same comparison above, of the returns to experience for high vs. low earners:
+
+```{r, warning = FALSE}
+lincom(model, `exper[0.75]` - `exper[0.25]`)
+```
+
+## Conclusion and Comparison of Solutions
+
+First, note that solution 2 is a normal-based boostrap approach. We get the covariance matrix of the parameters by bootstrap, but then use normal-based asymptotics in our `test` and `lincom` commands. Solution 1 is completely non-parametric, as we are making no such distributional assumption when getting bootstrap samples of our statistic.
+
+In some ways solution 2 feels a little heavier, because we have to change the "machinery" in order to account for the weirdness of quantile regression models. On the other hand, now it "just works" just like linear models. Solution 1 requires a little more finagling and tailoring to get our code right, and in that way could be more prone to user error. 
+
+In the end, this illustrates a trade-off in computer programming. It's certainly attractive to design a system with complex interacting parts, such that the end result for the user is extremely simple and intuitive code—think Solution 2, or the tidyverse. There is a lot of burden on the designers in these systems, for example when something like quantile regression inevitably comes along and turns into a pain point for users. Then it falls on the designers to create a way for quantile regression to fit into their tidy system, which can involve difficult, sometimes painful trade-offs with the code that gets written.
+
+The other approach is to be more "libertarian" as a designer and leave more in the user's control. This is like Solution 1, where as a user you have to understand how to shape a quantile regression model in such a way that you can use mosaic with it. I would say it's more "bulletproof" as a design philosophy, but you're also probably giving some users enough rope to hang themselves with.
+
+The real world is not black and white, so it's hard to neatly categorize any R package as fitting into one or the other of these buckets. However, I think this is an important distinction to make, and as you gain more experience as a programmer it helps you to start framing the decisions that package creators make and understand what trade-offs they were weighing.
+
+<hr>
+
+Happy Coding!
