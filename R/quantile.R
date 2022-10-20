@@ -18,14 +18,18 @@ vcovBS.rqs <- function(x, cluster = NULL, R = 250) {
 
 #' @export
 normalized_coef <- function(model) {
-  t <- as.numeric(stats::coef(model))
+  if(is.matrix(stats::coef(model))){ 
+    t <- as.numeric(stats::coef(model))
 
-  pull_tau <- . %>% stringr::str_match("tau= (.*)") %>% magrittr::extract(,2)
+    pull_tau <- . %>% stringr::str_match("tau= (.*)") %>% magrittr::extract(,2)
 
-  stats::coef(model) %>%
-    {expand.grid(rownames(.), colnames(.))} %>%
-    glue::glue_data("{Var1}[{pull_tau(Var2)}]") %>%
-    rlang::set_names(t, .)
+    stats::coef(model) %>%
+      {expand.grid(rownames(.), colnames(.))} %>%
+      glue::glue_data("{Var1}[{pull_tau(Var2)}]") %>%
+      rlang::set_names(t, .)
+  } else {
+    stats::coef(model)
+  }
 }
 
 #' @export
