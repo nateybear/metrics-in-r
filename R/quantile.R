@@ -1,12 +1,12 @@
 #' @export
 #' @importFrom sandwich vcovBS
+#' @importFrom mosaic do resample
 vcovBS.rqs <- function(x, cluster = NULL, R = 250) {
   fit_model <- function(m, data) {
     normalized_coef(quantreg::rq(m$formula, data, tau = m$tau))
   }
 
-  mosaic::do(R) * fit_model(x, mosaic::resample(data, groups = cluster)) %>%
-  stats::cov
+  stats::cov(do(R) * fit_model(x, resample(data, groups = cluster)))
 }
 
 #' @export
