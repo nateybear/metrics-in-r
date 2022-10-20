@@ -11,7 +11,7 @@ postEstimation <- function(clazz) {
       names(coefs) <- params
     }
 
-    # generic stats::vcov by default, or pass one in as a matrix or function
+    # homoskedastic vcov. by default, or pass one in as a matrix or function
     V <- if (is.null(vcov.)) {
       stats::vcov(model)
     } else if (is.matrix(vcov.)) {
@@ -39,7 +39,7 @@ print.postEstimation <- function(x, ...) {
     print(table)
   }
   if (!is.null(x$params)) {
-    model_names <- names(stats::coef(x$model))
+    model_names <- names(normalized_coef(x$model))
     conversions <- glue::glue("{x$params}={model_names}") %>% paste0(collapse = ", ")
     cat("\n")
     cli::cli_alert_info(glue::glue("Where {conversions}"))

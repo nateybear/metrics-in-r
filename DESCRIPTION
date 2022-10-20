@@ -35,6 +35,7 @@ Imports:
     cli,
     glue,
     magrittr,
+    mosaic,
     rlang,
     stats
 Suggests: 
