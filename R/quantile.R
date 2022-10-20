@@ -9,10 +9,11 @@ vcovBS.rqs <- function(x, cluster = NULL, R = 250) {
   stats::cov
 }
 
+#' @export
 normalized_coef <- function(model) {
-  t <- as.numeric(coef(model))
+  t <- as.numeric(stats::coef(model))
 
-  coef(model) %>%
+  stats::coef(model) %>%
     {expand.grid(rownames(.), colnames(.))} %>%
     glue::glue_data("{Var1}[{Var2}]") %>%
     rlang::set_names(t, .)
