@@ -9,6 +9,7 @@ articles:
   - art/intro-lm
   - art/robust-ses
   - art/rmarkdown-intro
+  - art/post-estimation
 - title: The Zen of Programming
   desc: Learn how to enjoy programming by following best practices accumulated over generations of Zen masters.
   contents:
