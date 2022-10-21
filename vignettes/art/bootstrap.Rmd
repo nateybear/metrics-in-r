@@ -151,14 +151,17 @@ library(sandwich)
 vcovBS(model)
 ```
 
-Mosaic also has some nice tools for bootstrapping models, but it doesn't quite work for quantile regressions either. Compare this:
+Mosaic also has some nice tools for bootstrapping models, but it doesn't quite work for quantile regressions either. Compare a linear model:
 
 ```{r, warning = FALSE, cache = TRUE}
-mosaic_out <- do(1000) * lm(wage ~ educ + abil + exper, data = resample(data))
+mosaic_out <- do(1000) * lm(
+    wage ~ educ + abil + exper, 
+    data = resample(data)
+)
 confint(mosaic_out)
 ```
 
-To this:
+To a quantile regression:
 
 ```{r, warning = FALSE, error = TRUE, cache = TRUE}
 mosaic_out <- do(1000) * rq(
