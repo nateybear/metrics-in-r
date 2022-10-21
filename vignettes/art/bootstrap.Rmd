@@ -15,27 +15,33 @@ if("metrics.in.r" %in% (.packages())){
 
 ## The Idea: A Bit of Magic
 
-When you first learn about the bootstrap, it may seem a little magical. You seem to get a lot for free, in that you *only* need to resample your data a bunch of times in order to get a sampling distribution of any statistic you like. I want to emphasize two points, and then we'll move onto coding.
+When you first learn about the bootstrap, it may seem a little magical. You seem to get a lot for free, in that you *only* need to resample your data a bunch of times in order to get a sampling distribution of any statistic you like.
+
+**Definition:** Recall that we believe there is a "true value" of a population-level in the statistic. That is, the mean is a (unknown) number, $\beta$ coefficients are true (unknown) numbers. The uncertainty in estimating $\beta$ comes from the fact that we only have a finite sample from the entire population. If we imagine drawing many samples of length $N$ from the population, then intuitively we know that you will get different values of $\beta$ for each sample. This distribution of $\beta$s is called the **sampling distribution**. It is the distribution of a statistic due to sampling variation.
+
+I want to emphasize two points, and then we'll move onto coding.
 
 ### The "Sample Analogue" and WLLN
 
-When you bootstrap something, what you get back is a bunch of numbers. Those numbers are a random sample from a distribution! For example, when you bootstrap OLS coefficients, what you get from the bootstrap process is a random sample from the distribution of your $\beta$s. So to "conduct inference" on the $\beta$s, we just need to ask questions about this sample of $\beta$s that we're given. This a fundamentally different way of doing statistical inference than the classical way of saying that $\beta$s are normally distributed with some distribution and then using critical values from the standard normal to accept/reject a hypothesis.
+When you bootstrap something, what you get back is a bunch of numbers. Those numbers are a random sample from a distribution! It is a random sample from the sampling distribution of $\beta$.
 
-The law of large numbers along with the continuous mapping theorem gives us a lot of power. This basically tells us that we can take the average value of some function $g$ in our data, and this is a good estimate of the true value of $g$ in the entire population. Formally we write
+To "conduct inference" on the $\beta$s, we just need to ask questions about this sample of $\beta$s that we're given. This a fundamentally different way of doing statistical inference than the classical way of saying that $\beta$s are normally distributed with some distribution and then using critical values from the standard normal to accept/reject a hypothesis.
+
+The law of large numbers along with the continuous mapping theorem gives us a lot of power. This basically tells us that we can take the average value of some function $g$ in our sample of $\beta$s, and this is a good estimate of the true value of $g$ in the entire population. Formally we write
 
 $$
-\frac{1}{N} \sum_{i=1}^N g(X_i) \overset{p}\rightarrow E(g(X))
+\frac{1}{B} \sum_{i=1}^B g(\beta_i) \overset{p}\rightarrow g(\beta)
 $$
 
-I also want to point out that this **sample analogue** technique intuitively applies to other situations. The sample median is a pretty good guess of the population median. The 5%-95% interval in our data is a pretty good estimate of that 90% interval in the population. 
+I also want to point out that this **sample analogue** technique intuitively applies to other situations. The sample median of our $\beta$s is a pretty good guess of the population median. The 5%-95% interval of our sample of $\beta$s is a pretty good estimate of that 90% interval on the true value of $\beta$. 
 
-Let's make this more concrete. Say we are bootstrapping OLS coefficients from some regression. Then we can think of our random sample as a random sample of $\beta$s from the *true distribution* of $\beta$s. We can construct estimates of the "turning point" of mage from Problem Set 2 as
+Let's make this more concrete. Say we are bootstrapping OLS coefficients from some regression, and we want to estimate the "turning point" of mage from Problem Set 2. We take all of these $\beta$ samples and construct
 
 $$
 \theta_i \equiv -\beta_{mage}^i/(2\beta_{magesq}^i)
 $$
 
-And now we can think of these $\theta_i$ as samples from the *true distribution* of the turning point. If we take the mean, this is an estimate of the mean value of the turning point, and we can construct confidence intervals using the $\alpha/2$ and $1-\alpha/2$ quantiles of the bootstrap samples.
+And now we can think of these $\theta_i$ as draws from the sampling distribution of the turning point. If we take the mean of these $\theta_i$, this is an estimate of the mean value of the turning point. If we take the 5th and 95th percentiles of the $\theta_i$, this is a 90% confidence interval on the true value of the turning point.
 
 Conclusion: With bootstrapping, you are generating a random sample of a *statistic* from a finite amount of data. This is the magic of resampling. To emphasize the generality, let me expand your idea of a statistic.
 
