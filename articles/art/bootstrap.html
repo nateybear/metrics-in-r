@@ -157,7 +157,7 @@
 <span><span class="co">## </span></span>
 <span><span class="co">## Bootstrap Statistics :</span></span>
 <span><span class="co">##     original     bias    std. error</span></span>
-<span><span class="co">## t1*  11.5429 0.06200778   0.2208038</span></span></code></pre>
+<span><span class="co">## t1*  11.5429 0.06101799    0.223427</span></span></code></pre>
 <p>Notice that it doesn’t return a numeric vector like mosaic or the DIY versions, but instead a “boot object” that will print a summary of the bootstrap procedure.</p>
 </div>
 </div>
@@ -233,19 +233,22 @@
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sandwich.R-Forge.R-project.org/" class="external-link">sandwich</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://sandwich.R-Forge.R-project.org/reference/vcovBS.html" class="external-link">vcovBS</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Error in rval + sign[i] * cov(cf, use = use): non-conformable arrays</span></span></code></pre>
-<p>Mosaic also has some nice tools for bootstrapping models, but it doesn’t quite work for quantile regressions either. Compare this:</p>
+<p>Mosaic also has some nice tools for bootstrapping models, but it doesn’t quite work for quantile regressions either. Compare a linear model:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">mosaic_out</span> <span class="op">&lt;-</span> <span class="fu">do</span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">wage</span> <span class="op">~</span> <span class="va">educ</span> <span class="op">+</span> <span class="va">abil</span> <span class="op">+</span> <span class="va">exper</span>, data <span class="op">=</span> <span class="fu"><a href="https://www.mosaic-web.org/mosaic/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">mosaic_out</span> <span class="op">&lt;-</span> <span class="fu">do</span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span></span>
+<span>    <span class="va">wage</span> <span class="op">~</span> <span class="va">educ</span> <span class="op">+</span> <span class="va">abil</span> <span class="op">+</span> <span class="va">exper</span>, </span>
+<span>    data <span class="op">=</span> <span class="fu"><a href="https://www.mosaic-web.org/mosaic/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">mosaic_out</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##        name       lower       upper level     method    estimate</span></span>
-<span><span class="co">## 1 Intercept -23.5429851  -9.8515091  0.95 percentile -16.6397660</span></span>
-<span><span class="co">## 2      educ   1.2936295   2.1335038  0.95 percentile   1.7015644</span></span>
-<span><span class="co">## 3      abil   0.2788612   0.6957152  0.95 percentile   0.4879376</span></span>
-<span><span class="co">## 4     exper   0.4238085   0.8580785  0.95 percentile   0.6393264</span></span>
-<span><span class="co">## 5     sigma   7.2844127   9.3494740  0.95 percentile   8.3210291</span></span>
-<span><span class="co">## 6 r.squared   0.1305195   0.2012573  0.95 percentile   0.1625965</span></span>
-<span><span class="co">## 7         F  61.3457908 102.9707868  0.95 percentile  79.3497685</span></span></code></pre>
-<p>To this:</p>
+<span><span class="co">## 1 Intercept -23.5473500 -10.2960245  0.95 percentile -16.6397660</span></span>
+<span><span class="co">## 2      educ   1.3135650   2.1255234  0.95 percentile   1.7015644</span></span>
+<span><span class="co">## 3      abil   0.2844381   0.6907899  0.95 percentile   0.4879376</span></span>
+<span><span class="co">## 4     exper   0.4412684   0.8604898  0.95 percentile   0.6393264</span></span>
+<span><span class="co">## 5     sigma   7.3481428   9.3706225  0.95 percentile   8.3210291</span></span>
+<span><span class="co">## 6 r.squared   0.1293759   0.2013481  0.95 percentile   0.1625965</span></span>
+<span><span class="co">## 7         F  60.7283993 103.0289610  0.95 percentile  79.3497685</span></span></code></pre>
+<p>To a quantile regression:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mosaic_out</span> <span class="op">&lt;-</span> <span class="fu">do</span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/pkg/quantreg/man/rq.html" class="external-link">rq</a></span><span class="op">(</span></span>
 <span>    <span class="va">wage</span> <span class="op">~</span> <span class="va">educ</span> <span class="op">+</span> <span class="va">abil</span> <span class="op">+</span> <span class="va">exper</span>,</span>
@@ -272,8 +275,8 @@
 <span><span class="va">diff_pe_expers</span> <span class="op">&lt;-</span> <span class="fu">do</span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="op">*</span> <span class="fu">diff_pe_exper</span><span class="op">(</span><span class="fu"><a href="https://www.mosaic-web.org/mosaic/reference/resample.html" class="external-link">resample</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">diff_pe_expers</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##            name     lower    upper level     method estimate</span></span>
-<span><span class="co">## 1 diff_pe_exper 0.2298966 0.597413  0.95 percentile  0.41232</span></span></code></pre>
+<pre><code><span><span class="co">##            name     lower     upper level     method estimate</span></span>
+<span><span class="co">## 1 diff_pe_exper 0.2351095 0.5985628  0.95 percentile  0.41232</span></span></code></pre>
 <p>The output tells us that expected returns to experience are about 20 to 60 cents higher for higher earners than lower earners, HAEF. This solution is pretty straightforward, as long as you know <em>a priori</em> what function of the <span class="math inline">\(\beta\)</span>s you’re interested in.</p>
 </div>
 <div class="section level2">
@@ -291,31 +294,31 @@
 <p>Then when you run <code>vcov</code> on the model, those are the names in the covariance matrix. Use the <code>R</code> parameter to change the number of bootstrap iterations:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">model</span>, R <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##                   (Intercept)[0.25]   educ[0.25]    abil[0.25]  exper[0.25]</span></span>
-<span><span class="co">## (Intercept)[0.25]       4.208016340 -0.209588384  0.0045265651 -0.150040209</span></span>
-<span><span class="co">## educ[0.25]             -0.209588384  0.012218378 -0.0018597120  0.005645119</span></span>
-<span><span class="co">## abil[0.25]              0.004526565 -0.001859712  0.0059575987  0.001093977</span></span>
-<span><span class="co">## exper[0.25]            -0.150040209  0.005645119  0.0010939772  0.007466726</span></span>
-<span><span class="co">## (Intercept)[0.75]       2.609634688 -0.150952105  0.0653030519 -0.074793204</span></span>
-<span><span class="co">## educ[0.75]             -0.134643529  0.009008500 -0.0054146739  0.002589119</span></span>
-<span><span class="co">## abil[0.75]              0.005692779 -0.002440167  0.0067005131  0.001634878</span></span>
-<span><span class="co">## exper[0.75]            -0.086745785  0.003783915 -0.0005358332  0.003894305</span></span>
-<span><span class="co">##                   (Intercept)[0.75]   educ[0.75]    abil[0.75]   exper[0.75]</span></span>
-<span><span class="co">## (Intercept)[0.25]        2.60963469 -0.134643529  0.0056927788 -0.0867457848</span></span>
-<span><span class="co">## educ[0.25]              -0.15095211  0.009008500 -0.0024401671  0.0037839151</span></span>
-<span><span class="co">## abil[0.25]               0.06530305 -0.005414674  0.0067005131 -0.0005358332</span></span>
-<span><span class="co">## exper[0.25]             -0.07479320  0.002589119  0.0016348783  0.0038943045</span></span>
-<span><span class="co">## (Intercept)[0.75]        7.35441246 -0.447378446  0.1733159347 -0.1899327309</span></span>
-<span><span class="co">## educ[0.75]              -0.44737845  0.030962091 -0.0170753178  0.0079498594</span></span>
-<span><span class="co">## abil[0.75]               0.17331593 -0.017075318  0.0241210567  0.0008986141</span></span>
-<span><span class="co">## exper[0.75]             -0.18993273  0.007949859  0.0008986141  0.0088582642</span></span></code></pre>
+<pre><code><span><span class="co">##                   (Intercept)[0.25]   educ[0.25]    abil[0.25]   exper[0.25]</span></span>
+<span><span class="co">## (Intercept)[0.25]       3.069318964 -0.159473400  0.0227418044 -0.1014668447</span></span>
+<span><span class="co">## educ[0.25]             -0.159473400  0.010075067 -0.0028723896  0.0036288669</span></span>
+<span><span class="co">## abil[0.25]              0.022741804 -0.002872390  0.0069073858  0.0002776524</span></span>
+<span><span class="co">## exper[0.25]            -0.101466845  0.003628867  0.0002776524  0.0050977589</span></span>
+<span><span class="co">## (Intercept)[0.75]       1.136220343 -0.076291506  0.0346909740 -0.0274390755</span></span>
+<span><span class="co">## educ[0.75]             -0.059654301  0.004873874 -0.0021723091  0.0005330422</span></span>
+<span><span class="co">## abil[0.75]              0.003140983 -0.001387015  0.0019492423  0.0008389932</span></span>
+<span><span class="co">## exper[0.75]            -0.039949191  0.001749534 -0.0010268998  0.0020450352</span></span>
+<span><span class="co">##                   (Intercept)[0.75]    educ[0.75]    abil[0.75]   exper[0.75]</span></span>
+<span><span class="co">## (Intercept)[0.25]        1.13622034 -0.0596543011  0.0031409835 -0.0399491911</span></span>
+<span><span class="co">## educ[0.25]              -0.07629151  0.0048738736 -0.0013870147  0.0017495338</span></span>
+<span><span class="co">## abil[0.25]               0.03469097 -0.0021723091  0.0019492423 -0.0010268998</span></span>
+<span><span class="co">## exper[0.25]             -0.02743908  0.0005330422  0.0008389932  0.0020450352</span></span>
+<span><span class="co">## (Intercept)[0.75]        6.93868011 -0.4124775444  0.1539523866 -0.1999443053</span></span>
+<span><span class="co">## educ[0.75]              -0.41247754  0.0276306653 -0.0133880293  0.0085655544</span></span>
+<span><span class="co">## abil[0.75]               0.15395239 -0.0133880293  0.0163707002 -0.0009659254</span></span>
+<span><span class="co">## exper[0.75]             -0.19994431  0.0085655544 -0.0009659254  0.0097080594</span></span></code></pre>
 <p><strong>Putting it all together</strong>: With this machinery in place, we can use the <code>lincom</code> command to run the same comparison above, of the returns to experience for high vs. low earners:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/lincom.html">lincom</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">`exper[0.75]`</span> <span class="op">-</span> <span class="va">`exper[0.25]`</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
 <span><span class="co">##   Expression                    Estimate `Std. Error` `t-Value` `Pr(&gt;|t|)`</span></span>
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> `exper[0.75]` - `exper[0.25]`    0.412       0.089<span style="text-decoration: underline;">9</span>      4.58 0.000<span style="text-decoration: underline;">005</span>01</span></span></code></pre>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> `exper[0.75]` - `exper[0.25]`    0.412        0.104      3.98  0.000<span style="text-decoration: underline;">072</span>4</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="conclusion-and-comparison-of-solutions">Conclusion and Comparison of Solutions<a class="anchor" aria-label="anchor" href="#conclusion-and-comparison-of-solutions"></a>
