@@ -55,7 +55,7 @@ But you can also think bigger: nonparametric statistics, like kernel regression 
 
 As an example: We want to bootstrap the median wage in the HTV dataset.
 
-Since bootstrapping is conceptually straightforward, there's nothing stopping you from doing it yourself. You just need a for loop:
+Since bootstrapping is computationally straightforward, there's nothing stopping you from doing it yourself. You just need a for loop:
 
 ```{r, warning = FALSE, message = FALSE}
 library(haven)
