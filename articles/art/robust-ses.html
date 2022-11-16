@@ -74,12 +74,21 @@
 
     
     
-<p>Congrats! You’ve managed to make a linear model in R, but the immediate problem that us economists face is that we want robust standard errors. R doesn’t provide this out of the box, so we have to use a package that will compute robust standard errors for us. Luckily, this is quite easy to do, and we’ll run through it here in this article.</p>
+<p>Congrats! You’ve managed to make a linear model in R, but the
+immediate problem that us economists face is that we want robust
+standard errors. R doesn’t provide this out of the box, so we have to
+use a package that will compute robust standard errors for us. Luckily,
+this is quite easy to do, and we’ll run through it here in this
+article.</p>
 <div class="section level2">
 <h2 id="sandwich-does-it-all">
 <code>sandwich</code> does it all<a class="anchor" aria-label="anchor" href="#sandwich-does-it-all"></a>
 </h2>
-<p>The <code>sandwich</code> R package is a Swiss army knife that can do a lot for you when it comes to robust standard errors. It’s called “sandwich” because most variance estimators tend to have a form that looks like a sandwich: that’s the <span class="math inline">\(Q_{XX}Q_{u^2XX}Q_{XX}\)</span> form you may be familiar with. Either way, I think it’s a cute name.</p>
+<p>The <code>sandwich</code> R package is a Swiss army knife that can do
+a lot for you when it comes to robust standard errors. It’s called
+“sandwich” because most variance estimators tend to have a form that
+looks like a sandwich: that’s the <span class="math inline">\(Q_{XX}Q_{u^2XX}Q_{XX}\)</span> form you may be
+familiar with. Either way, I think it’s a cute name.</p>
 <p>Let’s recreate the model that we used in the intro article.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
@@ -90,7 +99,16 @@
 <p>Now we load the sandwich package.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sandwich.R-Forge.R-project.org/" class="external-link">sandwich</a></span><span class="op">)</span></span></code></pre></div>
-<p>There are a few different functions in sandwich, which correspond to the different types of robust variance estimators: <code>vcovHC</code> for the classic “White’s” (heteroskedasticity-consistent) standard errors; <code>vcovCL</code> for clustered standard errors; and <code>vcovBS</code> for boostrapped standard errors. Making a covariance matrix of our <span class="math inline">\(\beta\)</span> estimates for a given regression model is as easy as calling <code>vcovHC</code> on the model. The <code>type</code> argument is optional: There are different types of “corrections” for heteroskedasticity-robust standard errors, and HC1 is the correction that Stata uses by default.</p>
+<p>There are a few different functions in sandwich, which correspond to
+the different types of robust variance estimators: <code>vcovHC</code>
+for the classic “White’s” (heteroskedasticity-consistent) standard
+errors; <code>vcovCL</code> for clustered standard errors; and
+<code>vcovBS</code> for boostrapped standard errors. Making a covariance
+matrix of our <span class="math inline">\(\beta\)</span> estimates for a
+given regression model is as easy as calling <code>vcovHC</code> on the
+model. The <code>type</code> argument is optional: There are different
+types of “corrections” for heteroskedasticity-robust standard errors,
+and HC1 is the correction that Stata uses by default.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://sandwich.R-Forge.R-project.org/reference/vcovHC.html" class="external-link">vcovHC</a></span><span class="op">(</span><span class="va">model</span>, type <span class="op">=</span> <span class="st">"HC1"</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##             (Intercept)         educ        abil    educ:abil</span></span>
@@ -98,7 +116,10 @@
 <span><span class="co">## educ        -0.30589725  0.027454256  0.02829398 -0.003324115</span></span>
 <span><span class="co">## abil        -0.24542291  0.028293984  0.43706077 -0.035738635</span></span>
 <span><span class="co">## educ:abil    0.03078957 -0.003324115 -0.03573864  0.003002688</span></span></code></pre>
-<p>From now on, I’ll omit the <code>type</code> argument to keep my R code cleaner. Once we have the robust covariance matrix, we can get the robust standard errors of our <span class="math inline">\(\beta\)</span> estimates by taking the square root of the diagonal:</p>
+<p>From now on, I’ll omit the <code>type</code> argument to keep my R
+code cleaner. Once we have the robust covariance matrix, we can get the
+robust standard errors of our <span class="math inline">\(\beta\)</span>
+estimates by taking the square root of the diagonal:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://sandwich.R-Forge.R-project.org/reference/vcovHC.html" class="external-link">vcovHC</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## (Intercept)        educ        abil   educ:abil </span></span>
@@ -106,12 +127,16 @@
 <p>Another way to do this is with the pipe operator:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="va">vcovHC</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="va">diag</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="va">sqrt</span></span></code></pre></div>
-<p>I won’t explain the pipe operator now. I prefer you to have an “immersive” introduction for now, and I will cover it more in-depth later. Just notice that it sort of “unwraps” the nested function calls and reverses the order of the calls.</p>
+<p>I won’t explain the pipe operator now. I prefer you to have an
+“immersive” introduction for now, and I will cover it more in-depth
+later. Just notice that it sort of “unwraps” the nested function calls
+and reverses the order of the calls.</p>
 </div>
 <div class="section level2">
 <h2 id="but-what-about-the-pretty-tables">But what about the pretty tables<a class="anchor" aria-label="anchor" href="#but-what-about-the-pretty-tables"></a>
 </h2>
-<p>Recall that in the intro article we could do this with our model and get a nice summary table</p>
+<p>Recall that in the intro article we could do this with our model and
+get a nice summary table</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## </span></span>
@@ -134,7 +159,13 @@
 <span><span class="co">## Residual standard error: 8.438 on 1226 degrees of freedom</span></span>
 <span><span class="co">## Multiple R-squared:  0.1388, Adjusted R-squared:  0.1367 </span></span>
 <span><span class="co">## F-statistic: 65.88 on 3 and 1226 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
-<p>This summary table was generated with a homoskedastic assumption on the variance of the residuals, so we need to figure something else out for our robust standard errors. Luckily, there is a package called <code>lmtest</code> which provides this functionality. We call the <code>coeftest</code> function and give it both our model and a covariance matrix, and it will print a nice summary table like above:</p>
+<p>This summary table was generated with a homoskedastic assumption on
+the variance of the residuals, so we need to figure something else out
+for our robust standard errors. Luckily, there is a package called
+<code>lmtest</code> which provides this functionality. We call the
+<code>coeftest</code> function and give it both our model and a
+covariance matrix, and it will print a nice summary table like
+above:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">lmtest</span><span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
@@ -152,7 +183,15 @@
 <p>Again, with the pipe this would look like</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">model</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="https://rdrr.io/pkg/lmtest/man/coeftest.html" class="external-link">coeftest</a></span><span class="op">(</span>vcov. <span class="op">=</span> <span class="fu"><a href="https://sandwich.R-Forge.R-project.org/reference/vcovHC.html" class="external-link">vcovHC</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>So we have to expend a little more effort to get the covariance matrix of our <span class="math inline">\(\beta\)</span> estimates, but once we have both the model and our covariance matrix, we can make a summary table. In fact, we really could do this ourselves. I’m going to give a demonstration below that all we <em>need</em> for these summary tables is a model and a covariance matrix. Let’s replicate the output of <code>coeftest</code>—you don’t need to understand what I’m doing, just notice that the only objects that I’m using are the model and the covariance matrix.</p>
+<p>So we have to expend a little more effort to get the covariance
+matrix of our <span class="math inline">\(\beta\)</span> estimates, but
+once we have both the model and our covariance matrix, we can make a
+summary table. In fact, we really could do this ourselves. I’m going to
+give a demonstration below that all we <em>need</em> for these summary
+tables is a model and a covariance matrix. Let’s replicate the output of
+<code>coeftest</code>—you don’t need to understand what I’m doing, just
+notice that the only objects that I’m using are the model and the
+covariance matrix.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">estimate</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span></span>
 <span><span class="va">std_error</span> <span class="op">&lt;-</span> <span class="va">model</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="va">vcovHC</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="va">diag</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="va">sqrt</span></span>
@@ -169,8 +208,13 @@
 <div class="section level2">
 <h2 id="there-are-easier-alternatives">There are easier alternatives<a class="anchor" aria-label="anchor" href="#there-are-easier-alternatives"></a>
 </h2>
-<p>Since this is R and there are a lot of people using it, it makes sense that someone has written something to make robust standard errors easier. Two people have in fact.</p>
-<p>The first is the <code>lm_robust</code> function from the <code>estimatr</code> package. You specify the covariance type when you create your model, and then the <code>summary</code> function will use the correct type of robust standard errors in its output:</p>
+<p>Since this is R and there are a lot of people using it, it makes
+sense that someone has written something to make robust standard errors
+easier. Two people have in fact.</p>
+<p>The first is the <code>lm_robust</code> function from the
+<code>estimatr</code> package. You specify the covariance type when you
+create your model, and then the <code>summary</code> function will use
+the correct type of robust standard errors in its output:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://declaredesign.org/r/estimatr/" class="external-link">estimatr</a></span><span class="op">)</span></span>
 <span></span>
@@ -192,7 +236,9 @@
 <span><span class="co">## </span></span>
 <span><span class="co">## Multiple R-squared:  0.1388 ,    Adjusted R-squared:  0.1367 </span></span>
 <span><span class="co">## F-statistic: 61.57 on 3 and 1226 DF,  p-value: &lt; 2.2e-16</span></span></code></pre>
-<p>The second (and preferred) method is the <code>feols</code> function from the <code>fixest</code> package. Just like <code>lm_robust</code>, you specify the covariance type when you create your model:</p>
+<p>The second (and preferred) method is the <code>feols</code> function
+from the <code>fixest</code> package. Just like <code>lm_robust</code>,
+you specify the covariance type when you create your model:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://lrberge.github.io/fixest/" class="external-link">fixest</a></span><span class="op">)</span></span>
 <span></span>
@@ -210,13 +256,31 @@
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## RMSE: 8.42455   Adj. R2: 0.136723</span></span></code></pre>
-<p><strong>A word of warning</strong>: There are issues computing clustered standard errors with <code>lm_robust</code>. In general, I don’t trust the results that <code>lm_robust</code> give as much as I trust <code>sandwich</code> or <code>fixest</code>. Keep that in mind and choose wisely. I show you <code>lm_robust</code> because there are still many people that use it. You should convince them to switch over to <code>fixest</code> 🙂</p>
+<p><strong>A word of warning</strong>: There are issues computing
+clustered standard errors with <code>lm_robust</code>. In general, I
+don’t trust the results that <code>lm_robust</code> give as much as I
+trust <code>sandwich</code> or <code>fixest</code>. Keep that in mind
+and choose wisely. I show you <code>lm_robust</code> because there are
+still many people that use it. You should convince them to switch over
+to <code>fixest</code> 🙂</p>
 </div>
 <div class="section level2">
 <h2 id="conclusion-whyd-you-show-me-the-hard-way">Conclusion: Why’d you show me the hard way?<a class="anchor" aria-label="anchor" href="#conclusion-whyd-you-show-me-the-hard-way"></a>
 </h2>
-<p>Two reasons why I showed the <code>sandwich</code> and <code>coeftest</code> method. One is that I want to demystify a little bit of what is going on behind the scenes. You only need a <em>model</em> and a <em>covariance matrix</em>. Once you have those, you can compute standard errors, t statistics, and p values. I prefer using <code>sandwich</code> exactly for this reason: I don’t like “magic” and functions that do too much for me without me realizing what is going on.</p>
-<p>The second reason is that the <code>sandwich</code> and <code>coeftest</code> method remains enduringly popular. <code>lm_robust</code> had a moment of fame, and <code>fixest</code> is up and coming as a very popular library in econometrics, but sometimes you just want a simple, tried-and-true method. You can choose for yourself which method you’d like to use.</p>
+<p>Two reasons why I showed the <code>sandwich</code> and
+<code>coeftest</code> method. One is that I want to demystify a little
+bit of what is going on behind the scenes. You only need a
+<em>model</em> and a <em>covariance matrix</em>. Once you have those,
+you can compute standard errors, t statistics, and p values. I prefer
+using <code>sandwich</code> exactly for this reason: I don’t like
+“magic” and functions that do too much for me without me realizing what
+is going on.</p>
+<p>The second reason is that the <code>sandwich</code> and
+<code>coeftest</code> method remains enduringly popular.
+<code>lm_robust</code> had a moment of fame, and <code>fixest</code> is
+up and coming as a very popular library in econometrics, but sometimes
+you just want a simple, tried-and-true method. You can choose for
+yourself which method you’d like to use.</p>
 <hr>
 <p>Happy Coding!</p>
 </div>

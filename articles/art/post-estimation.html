@@ -77,22 +77,53 @@
 <div class="section level2">
 <h2 id="the-pattern">The Pattern<a class="anchor" aria-label="anchor" href="#the-pattern"></a>
 </h2>
-<p>After fitting our linear model, we often want to ask questions about combinations of the <span class="math inline">\(\beta\)</span>s. Are two of them equal, are these three equal to zero, is <span class="math inline">\(\tanh \beta_3\)</span> equal to zero? This is broadly known as post-estimation.</p>
-<p>I endorse the <span class="smallcaps">It’s All Delta Method™</span> view of post estimation testing. Recall the Delta Method says that if</p>
+<p>After fitting our linear model, we often want to ask questions about
+combinations of the <span class="math inline">\(\beta\)</span>s. Are two
+of them equal, are these three equal to zero, is <span class="math inline">\(\tanh \beta_3\)</span> equal to zero? This is
+broadly known as post-estimation.</p>
+<p>I endorse the <span class="smallcaps">It’s All Delta Method™</span>
+view of post estimation testing. Recall the Delta Method says that
+if</p>
 <ul>
 <li>
-<span class="math inline">\(X\)</span> is a k-dimensional multivariate random normal with mean <span class="math inline">\(\mu\)</span> and covariance matrix <span class="math inline">\(\Sigma\)</span>
+<span class="math inline">\(X\)</span> is a k-dimensional
+multivariate random normal with mean <span class="math inline">\(\mu\)</span> and covariance matrix <span class="math inline">\(\Sigma\)</span>
 </li>
 <li>
-<span class="math inline">\(g:\mathbb{R}^k \rightarrow \mathbb{R}^l\)</span> has a non-zero <span class="math inline">\(l\times k\)</span> derivative matrix, call it <span class="math inline">\(\nabla\! g\)</span>
+<span class="math inline">\(g:\mathbb{R}^k \rightarrow
+\mathbb{R}^l\)</span> has a non-zero <span class="math inline">\(l\times
+k\)</span> derivative matrix, call it <span class="math inline">\(\nabla\! g\)</span>
 </li>
 </ul>
-<p>Then we can approximate the distribution of <span class="math inline">\(g(X)\)</span> as normal with mean <span class="math inline">\(g(\mu)\)</span> and variance <span class="math inline">\(\nabla\! g(\mu) \Sigma \nabla\! g(\mu)'\)</span>. This is basically a first-order approximation to the distribution using a Taylor series. Like in a Taylor series, if <span class="math inline">\(g\)</span> is linear (i.e. <span class="math inline">\(g(x) = Ax\)</span> for some matrix <span class="math inline">\(A\)</span>), then this is not just an approximation, it is <em>exact</em>.</p>
-<p>Second, remember that we can choose to evaluate multiple hypotheses either jointly or independently. If we evaluate them independently, we read the standard errors off the diagonal of the variance matrix and construct a bunch of t- or z-values. If evaluate them jointly in order to test that <span class="math inline">\(g(\mu)=0\)</span>, we construct the chi-square type of statistic by combining all of the hypotheses together into one value. We do that by pre- and post-multiplying the point estimates around the inverse variance matrix, i.e. <span class="math display">\[
-g(\mu)' (\nabla\! g(\mu) \Sigma \nabla\! g(\mu)') ^ {-1} g(\mu) \sim \mathcal{\chi}^2_l
+<p>Then we can approximate the distribution of <span class="math inline">\(g(X)\)</span> as normal with mean <span class="math inline">\(g(\mu)\)</span> and variance <span class="math inline">\(\nabla\! g(\mu) \Sigma \nabla\!
+g(\mu)'\)</span>. This is basically a first-order approximation to
+the distribution using a Taylor series. Like in a Taylor series, if
+<span class="math inline">\(g\)</span> is linear (i.e. <span class="math inline">\(g(x) = Ax\)</span> for some matrix <span class="math inline">\(A\)</span>), then this is not just an
+approximation, it is <em>exact</em>.</p>
+<p>Second, remember that we can choose to evaluate multiple hypotheses
+either jointly or independently. If we evaluate them independently, we
+read the standard errors off the diagonal of the variance matrix and
+construct a bunch of t- or z-values. If evaluate them jointly in order
+to test that <span class="math inline">\(g(\mu)=0\)</span>, we construct
+the chi-square type of statistic by combining all of the hypotheses
+together into one value. We do that by pre- and post-multiplying the
+point estimates around the inverse variance matrix, i.e. <span class="math display">\[
+g(\mu)' (\nabla\! g(\mu) \Sigma \nabla\! g(\mu)') ^ {-1} g(\mu)
+\sim \mathcal{\chi}^2_l
 \]</span></p>
-<p>In conclusion, you have two questions: is my function linear, and am I testing jointly or independently? The four possible combinations give you the four Stata commands used in post-estimation: <strong>test</strong>, <strong>testnl</strong>, <strong>lincom</strong>, and <strong>nlcom</strong>. They all have to perform Delta Method to estimate the distribution of <span class="math inline">\(g(X)\)</span>, but the only difference is what you do with that once you get it:</p>
+<p>In conclusion, you have two questions: is my function linear, and am
+I testing jointly or independently? The four possible combinations give
+you the four Stata commands used in post-estimation:
+<strong>test</strong>, <strong>testnl</strong>, <strong>lincom</strong>,
+and <strong>nlcom</strong>. They all have to perform Delta Method to
+estimate the distribution of <span class="math inline">\(g(X)\)</span>,
+but the only difference is what you do with that once you get it:</p>
 <table class="table">
+<colgroup>
+<col width="20%">
+<col width="34%">
+<col width="44%">
+</colgroup>
 <thead><tr class="header">
 <th align="right"></th>
 <th>Linear</th>
@@ -120,7 +151,9 @@ g(\mu)' (\nabla\! g(\mu) \Sigma \nabla\! g(\mu)') ^ {-1} g(\mu) \sim \mathcal{\c
 <div class="section level2">
 <h2 id="the-implementation">The Implementation<a class="anchor" aria-label="anchor" href="#the-implementation"></a>
 </h2>
-<p>The 0.2.0 release of my code has Stata-esque post-estimation in it. Let’s start by estimating our favorite model, returns to wage based on education and ability score:</p>
+<p>The 0.2.0 release of my code has Stata-esque post-estimation in it.
+Let’s start by estimating our favorite model, returns to wage based on
+education and ability score:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org" class="external-link">tidyverse</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://haven.tidyverse.org" class="external-link">haven</a></span><span class="op">)</span></span>
@@ -140,12 +173,18 @@ g(\mu)' (\nabla\! g(\mu) \Sigma \nabla\! g(\mu)') ^ {-1} g(\mu) \sim \mathcal{\c
 <span><span class="co">## ---</span></span>
 <span><span class="co">## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</span></span>
 <span><span class="co">## RMSE: 0.53456   Adj. R2: 0.186697</span></span></code></pre>
-<p>Let’s suppose that we are interested in the partial effect of education on wages at different levels of ability. The partial effect is <span class="math inline">\(\beta_{educ} + abil * \beta_{educ * abil}\)</span>. It depends on the ability level. Let’s calulate the 25<sup>th</sup>, 50<sup>th</sup>, and 75<sup>th</sup> percentiles of ability</p>
+<p>Let’s suppose that we are interested in the partial effect of
+education on wages at different levels of ability. The partial effect is
+<span class="math inline">\(\beta_{educ} + abil * \beta_{educ *
+abil}\)</span>. It depends on the ability level. Let’s calulate the
+25<sup>th</sup>, 50<sup>th</sup>, and 75<sup>th</sup> percentiles of
+ability</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">abil_25</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">htv</span><span class="op">$</span><span class="va">abil</span>, <span class="fl">0.25</span><span class="op">)</span></span>
 <span><span class="va">abil_50</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/median.html" class="external-link">median</a></span><span class="op">(</span><span class="va">htv</span><span class="op">$</span><span class="va">abil</span><span class="op">)</span></span>
 <span><span class="va">abil_75</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/quantile.html" class="external-link">quantile</a></span><span class="op">(</span><span class="va">htv</span><span class="op">$</span><span class="va">abil</span>, <span class="fl">0.75</span><span class="op">)</span></span></code></pre></div>
-<p>The first thing we might try is lincom, which will give us a point estimate of each of these partial effects.</p>
+<p>The first thing we might try is lincom, which will give us a point
+estimate of each of these partial effects.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/nateybear/metrics-in-r" class="external-link">metrics.in.r</a></span><span class="op">)</span></span>
 <span></span>
@@ -160,12 +199,20 @@ g(\mu)' (\nabla\! g(\mu) \Sigma \nabla\! g(\mu)') ^ {-1} g(\mu) \sim \mathcal{\c
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> educ + abil_25 * `educ:abil`   0.081<span style="text-decoration: underline;">3</span>      0.010<span style="text-decoration: underline;">6</span>       7.69   3.09<span style="color: #949494;">e</span><span style="color: #BB0000;">-14</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> educ + abil_50 * `educ:abil`   0.073<span style="text-decoration: underline;">3</span>      0.008<span style="text-decoration: underline;">87</span>      8.27   3.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> educ + abil_75 * `educ:abil`   0.066<span style="text-decoration: underline;">7</span>      0.009<span style="text-decoration: underline;">60</span>      6.95   5.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span></span></span></code></pre>
-<p>Some explanation is warranted here. First, <code>educ</code> and <code>`educ:abil`</code> refer to coefficients in the model. I always look there first for values, and then your global environment. Second, the backticks on <code>`educ:abil`</code> are required because it’s a “weird” R expression and writing backticks tells R to consider that as one single variable. You would have to do that to test <code>`(Intercept)`</code> as well.</p>
-<p>One improvement (I think) that may make this easier: We can rename our betas. The names of our coefficients are currently</p>
+<p>Some explanation is warranted here. First, <code>educ</code> and
+<code>`educ:abil`</code> refer to coefficients in the model. I always
+look there first for values, and then your global environment. Second,
+the backticks on <code>`educ:abil`</code> are required because it’s a
+“weird” R expression and writing backticks tells R to consider that as
+one single variable. You would have to do that to test
+<code>`(Intercept)`</code> as well.</p>
+<p>One improvement (I think) that may make this easier: We can rename
+our betas. The names of our coefficients are currently</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/coef.html" class="external-link">coef</a></span><span class="op">(</span><span class="va">model</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "(Intercept)" "educ"        "abil"        "educ:abil"</span></span></code></pre>
-<p>But we can use the <code>glue</code> package to generate simpler names:</p>
+<p>But we can use the <code>glue</code> package to generate simpler
+names:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/tidyverse/glue" class="external-link">glue</a></span><span class="op">)</span></span>
 <span></span>
@@ -182,14 +229,19 @@ g(\mu)' (\nabla\! g(\mu) \Sigma \nabla\! g(\mu)') ^ {-1} g(\mu) \sim \mathcal{\c
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> b2 + abil_50 * b4   0.073<span style="text-decoration: underline;">3</span>      0.008<span style="text-decoration: underline;">87</span>      8.27   3.48<span style="color: #949494;">e</span><span style="color: #BB0000;">-16</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">3</span> b2 + abil_75 * b4   0.066<span style="text-decoration: underline;">7</span>      0.009<span style="text-decoration: underline;">60</span>      6.95   5.98<span style="color: #949494;">e</span><span style="color: #BB0000;">-12</span></span></span></code></pre>
 <pre><code><span><span class="co">## <span style="color: #00BBBB;">ℹ</span> Where b1=(Intercept), b2=educ, b3=abil, b4=educ:abil</span></span></code></pre>
-<p>Now let’s use the <code>test</code> command. This tests that all of the expressions you supply are equal to zero. Let’s test if the coefficients on <code>educ</code> and <code>abil</code> are equal to each other (i.e. <span class="math inline">\(\beta_{educ} - \beta_{abil} = 0\)</span>)</p>
+<p>Now let’s use the <code>test</code> command. This tests that all of
+the expressions you supply are equal to zero. Let’s test if the
+coefficients on <code>educ</code> and <code>abil</code> are equal to
+each other (i.e. <span class="math inline">\(\beta_{educ} - \beta_{abil}
+= 0\)</span>)</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/test.html">test</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">educ</span> <span class="op">-</span> <span class="va">abil</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Joint F Test of the linear hypotheses</span></span>
 <span><span class="co">## • educ - abil = 0</span></span>
 <span><span class="co">##                F(1,1226) = 0.686609               </span></span>
 <span><span class="co">##                  Pr(&gt;F) = 0.407481</span></span></code></pre>
-<p>The commands for nonlinear functions work the same, but you can use funky functions:</p>
+<p>The commands for nonlinear functions work the same, but you can use
+funky functions:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/nlcom.html">nlcom</a></span><span class="op">(</span><span class="va">model</span>, <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">educ</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">sqrt</a></span><span class="op">(</span><span class="va">abil</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 2 × 5</span></span></span>
@@ -197,7 +249,8 @@ g(\mu)' (\nabla\! g(\mu) \Sigma \nabla\! g(\mu)') ^ {-1} g(\mu) \sim \mathcal{\c
 <span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>         <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">1</span> sin(educ)    0.084<span style="text-decoration: underline;">1</span>       0.011<span style="text-decoration: underline;">7</span>      7.21   5.65<span style="color: #949494;">e</span><span style="color: #BB0000;">-13</span></span></span>
 <span><span class="co">## <span style="color: #BCBCBC;">2</span> sqrt(abil)   0.338        0.061<span style="text-decoration: underline;">3</span>      5.52   3.41<span style="color: #949494;">e</span><span style="color: #BB0000;">- 8</span></span></span></code></pre>
-<p>You can also supply your own <code>vcov</code> for the betas if you want. This can be a function or a matrix.</p>
+<p>You can also supply your own <code>vcov</code> for the betas if you
+want. This can be a function or a matrix.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://sandwich.R-Forge.R-project.org/" class="external-link">sandwich</a></span><span class="op">)</span></span>
 <span><span class="va">model</span> <span class="op"><a href="../../reference/pipe.html">%&gt;%</a></span> <span class="fu"><a href="../../reference/test.html">test</a></span><span class="op">(</span><span class="va">educ</span> <span class="op">-</span> <span class="va">abil</span>, vcov. <span class="op">=</span> <span class="fu"><a href="https://sandwich.R-Forge.R-project.org/reference/vcovHC.html" class="external-link">vcovHC</a></span><span class="op">(</span><span class="va">.</span>, type <span class="op">=</span> <span class="st">"HC1"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -205,32 +258,73 @@ g(\mu)' (\nabla\! g(\mu) \Sigma \nabla\! g(\mu)') ^ {-1} g(\mu) \sim \mathcal{\c
 <span><span class="co">## • educ - abil = 0</span></span>
 <span><span class="co">##                F(1,1226) = 0.686609               </span></span>
 <span><span class="co">##                  Pr(&gt;F) = 0.407481</span></span></code></pre>
-<p>Lastly, I should note that the default behavior with robust standard errors is to use the generic <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">stats::vcov</a></code> function. That means that <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> objects are homoskedastic by default, but <code>feols</code> and <code>lm_robust</code> objects will use the robust standard errors by default.</p>
+<p>Lastly, I should note that the default behavior with robust standard
+errors is to use the generic <code><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">stats::vcov</a></code> function. That
+means that <code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm()</a></code> objects are homoskedastic by default, but
+<code>feols</code> and <code>lm_robust</code> objects will use the
+robust standard errors by default.</p>
 </div>
 <div class="section level2">
 <h2 id="the-nitty-gritty-it-really-all-is-delta-method">The Nitty Gritty: It Really All is Delta Method<a class="anchor" aria-label="anchor" href="#the-nitty-gritty-it-really-all-is-delta-method"></a>
 </h2>
-<p>If you go into my <a href="https://github.com/nateybear/metrics-in-r/tree/main/R" class="external-link">code</a> and look at the definitions of these functions, it may seem weird:</p>
+<p>If you go into my <a href="https://github.com/nateybear/metrics-in-r/tree/main/R" class="external-link">code</a>
+and look at the definitions of these functions, it may seem weird:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">postEstimation</span><span class="op">(</span><span class="st">"test"</span><span class="op">)</span></span>
 <span><span class="va">tesnl</span> <span class="op">&lt;-</span> <span class="fu">postEstimation</span><span class="op">(</span><span class="st">"testnl"</span><span class="op">)</span></span>
 <span><span class="va">lincom</span> <span class="op">&lt;-</span> <span class="fu">postEstimation</span><span class="op">(</span><span class="st">"lincom"</span><span class="op">)</span></span>
 <span><span class="va">nlcom</span> <span class="op">&lt;-</span> <span class="fu">postEstimation</span><span class="op">(</span><span class="st">"nlcom"</span><span class="op">)</span></span></code></pre></div>
-<p>That’s it! Why so simple? What is the <code>postEstimation</code> function? Here is the code:</p>
+<p>That’s it! Why so simple? What is the <code>postEstimation</code>
+function? Here is the code:</p>
 <p><img src="img/post-estimation-1.png"></p>
-<p>First, note that <code>postEstimation</code> is a function that returns a function, sometimes known as a <strong>function factory</strong>. Note that the argument, <code>clazz</code>, is only used right at the end, on line 25. What is the rest of the function doing?</p>
-<p>Lines 8–21 are just some housekeeping. If you give me the <code>params</code> argument, change the names of my coefficient vector to match it. In lines 15–21 I’m just resolving the covariance of the betas given the different options for supplying it. The real work is line 23, the <code>deltaMethod</code>.</p>
-<p>The <code>deltaMethod</code> function returns the point estimate and covariance of the post-estimation hypotheses. How is a bit of digression… I refer the interested reader to the <a href="https://adv-r.hadley.nz/metaprogramming.html" class="external-link">metaprogramming</a> chapter of Advanced R and to the <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/deriv.html" class="external-link">reference page</a> on basic symbolic differentiation in R. The point is, it’s all just Delta Method.</p>
+<p>First, note that <code>postEstimation</code> is a function that
+returns a function, sometimes known as a <strong>function
+factory</strong>. Note that the argument, <code>clazz</code>, is only
+used right at the end, on line 25. What is the rest of the function
+doing?</p>
+<p>Lines 8–21 are just some housekeeping. If you give me the
+<code>params</code> argument, change the names of my coefficient vector
+to match it. In lines 15–21 I’m just resolving the covariance of the
+betas given the different options for supplying it. The real work is
+line 23, the <code>deltaMethod</code>.</p>
+<p>The <code>deltaMethod</code> function returns the point estimate and
+covariance of the post-estimation hypotheses. How is a bit of
+digression… I refer the interested reader to the <a href="https://adv-r.hadley.nz/metaprogramming.html" class="external-link">metaprogramming</a>
+chapter of Advanced R and to the <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/deriv.html" class="external-link">reference
+page</a> on basic symbolic differentiation in R. The point is, it’s all
+just Delta Method.</p>
 <p><img src="img/post-estimation-2.jpg"></p>
-<p>The only difference between all of the post-estimation commands is the class of the returned object. Then I just write a specialized method for each one that returns a summary table, for example <code>test</code>. This is where I calculate the f-statistic, just when the object is printed out.</p>
+<p>The only difference between all of the post-estimation commands is
+the class of the returned object. Then I just write a specialized method
+for each one that returns a summary table, for example
+<code>test</code>. This is where I calculate the f-statistic, just when
+the object is printed out.</p>
 <p><img src="img/post-estimation-3.png"></p>
-<p>I really want to emphasize the point that all of the post-estimation commands RETURN THE EXACT SAME OBJECT. What is printed to the screen differs for each command, but the underlying object is the exact same.</p>
+<p>I really want to emphasize the point that all of the post-estimation
+commands RETURN THE EXACT SAME OBJECT. What is printed to the screen
+differs for each command, but the underlying object is the exact
+same.</p>
 </div>
 <div class="section level2">
 <h2 id="conclusion">Conclusion<a class="anchor" aria-label="anchor" href="#conclusion"></a>
 </h2>
-<p>Hopefully this gives you a starting point for doing this in R. Keep in mind the two distinctions: whether it is linear or nonlinear, and whether you are jointly or independently testing your hypotheses. This will lead to pick one among <code>test</code>, <code>testnl</code>, <code>lincom</code>, or <code>nlcom</code>. It’s all Delta Method, but the particular test statistic that we choose will be different for each one.</p>
-<p>Why did I write this code myself? Surely there are other ways to do post-estimation in R. The only problem is that I have not found one that works as seamlessly as Stata does. The <code>car</code> package has <code>deltaMethod</code> and <code>linearHypothesis</code> functions, and the <code>aod</code> package has a <code>wald.test</code> function. You could definitely stitch them together to get the job done. My issue is that the difficulty of stitching them together is a friction that drives people away from R towards Stata. I want to smooth the bumps and make it easier for people to stop paying through the nose for mediocre software. So hopefully my code helps you.</p>
+<p>Hopefully this gives you a starting point for doing this in R. Keep
+in mind the two distinctions: whether it is linear or nonlinear, and
+whether you are jointly or independently testing your hypotheses. This
+will lead to pick one among <code>test</code>, <code>testnl</code>,
+<code>lincom</code>, or <code>nlcom</code>. It’s all Delta Method, but
+the particular test statistic that we choose will be different for each
+one.</p>
+<p>Why did I write this code myself? Surely there are other ways to do
+post-estimation in R. The only problem is that I have not found one that
+works as seamlessly as Stata does. The <code>car</code> package has
+<code>deltaMethod</code> and <code>linearHypothesis</code> functions,
+and the <code>aod</code> package has a <code>wald.test</code> function.
+You could definitely stitch them together to get the job done. My issue
+is that the difficulty of stitching them together is a friction that
+drives people away from R towards Stata. I want to smooth the bumps and
+make it easier for people to stop paying through the nose for mediocre
+software. So hopefully my code helps you.</p>
 <hr>
 <p>Happy Coding!</p>
 </div>
