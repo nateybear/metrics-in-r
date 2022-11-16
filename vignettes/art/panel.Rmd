@@ -1,0 +1,97 @@
+---
+title: "Panel Data and Fixed Effects Regression"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Panel Data and Fixed Effects Regression}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# Idea
+
+Fixed effects regression is one of those things that we don't necessarily need another package to do. We could do it ourselves with the standard linear model tools, either in R or Stata. Hence, we should set the bar pretty high for a package that we use for fixed effect regression package. It should contribute *a lot* to our productivity, otherwise why bother learning it?
+
+# Rolling it ourselves
+
+Remember from class that doing the "within" fixed effects estimator is the same as running OLS with dummy variables for each group id. So we can definitely do that ourselves.
+
+The data that I'll use for this example is the wage panel data from your problem set. I'll filter out a couple years.
+
+```{r, message = F, warning = F}
+library(tidyverse)
+library(haven)
+data <-
+    read_dta(system.file("wagepan.dta", package = "metrics.in.r")) %>%
+    filter(year < 1983)
+```
+
+The group id is the variable `nr` and the year ID is `year`. Let's estimate the two-way fixed effects model
+
+$$
+lwage_{it} = \beta_1 + \beta_2 union_{it} + \delta_i + \delta_t + u_{it}
+$$
+
+In other words, we care about the returns to union membership in percentage terms, controlling for unobserved heterogeneity across years and individuals.
+
+Categorical variables in R are called "factors." If we put them in the regression formula, then R will create dummy variables for the actual regression. Hence, let's convert `year` and `nr` to factors in our formula and estimate this model via OLS:
+
+```{r}
+(model <- lm(lwage ~ union + as_factor(nr) + as_factor(year), data = data))
+```
+
+That's a lot of output! As you can see, R reports a coefficient estimate for every dummy variable. You'll probably want to filter the results to the variables that you care about, and I'll do that below.
+
+In terms of computing standard errors, we *almost always* cluster standard errors at the individual level. Remember, the assumption was that there is some unobservable component unique to each person that determines wage. If that assumption is true, then residuals will *necessarily* be correlated within individuals, so we must compute standard errors that are robust to this clustered correlation.
+
+We do that in R using the `vcovCL` function from `sandwich`:
+
+```{r}
+library(sandwich)
+V <- vcovCL(model, ~nr)
+```
+
+Now we can report our coefficients using `coeftest` as we have done in the past. I'll use the `broom` package to filter out all the fixed effect estimates.
+
+```{r, message = F}
+library(broom)
+library(lmtest)
+
+coeftest(model, V) %>%
+    tidy() %>%
+    filter(term == "union")
+```
+
+# Using someone else's code
+
+There's two main libraries that you will probably use for panel data: `plm` and `fixest`. The former has been around longer and is endorsed by the [Intro to Econometrics with R](https://www.econometrics-with-r.org/) authors. The latter has been endorsed by... me, and there are other people that I know are switching to `fixest`. I'll refer you to [Section 10.3](https://www.econometrics-with-r.org/10.3-fixed-effects-regression.html) of *Intro to Metrics with R* if you're interested in `plm` and talk about `fixest` here.
+
+The thing that I like about `fixest` is its sensible treatment of standard errors and its functions for exporting regression tables. In order to fit a fixed effect model, you just need to use a vertical bar in your formula:
+
+```{r}
+library(fixest)
+(model <- feols(lwage ~ union | nr + year, data = data))
+```
+
+Two things that are nice: It doesn't print all of the fixed effect values like in lm. You can get them by running `fixef(model)`, but it's not printed in regression output by default.
+
+Also, you can see that it clusters standard errors at the level of the first fixed effect by default. That is the correct default to use, and you can use other type of standard errors if you like. There is [extensive](https://lrberge.github.io/fixest/articles/standard_errors.html) [documentation](https://lrberge.github.io/fixest/reference/index.html#standard-errors) on the author's website talking about standard errors, which is an exception for software packages.
+
+The export features are the last thing that I like about `fixest`. You'll care a lot more about this when you're writing papers, but it's nice to just have one function that has good defaults (it looks good in LaTeX).
+
+```{r}
+setFixest_dict(
+    lwage = "log(wage)",
+    nr = "Individual",
+    year = "Year",
+    union = "In union (0 or 1)"
+)
+etable(model)
+```
+
+# Conclusion
+
+As you go on, there will be more things that you *could* do yourself, but maybe it's easier to learn to use a package that already does it. It's a fixed cost to learn, and a constraint that you can only do what the package has implemented. That's not to discourage you from using extra packages, but rather encouragement to take on the challenge and do it yourself sometimes. You learn more that way.
+
+<hr>
+
+Happy Coding!
