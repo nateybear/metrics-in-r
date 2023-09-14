@@ -51,7 +51,7 @@ summaryTable.nlcom <- function(x) {
   z_val <- estimate / se
   p_val <- 2 * stats::pnorm(-abs(z_val))
 
-  t_crit <- stats::qt((1 - x$alpha) / 2, df = stats::df.residual(x$model))
+  t_crit <- abs(stats::qt((1 - x$alpha) / 2, df = stats::df.residual(x$model)))
 
 
   tibble::tibble(
