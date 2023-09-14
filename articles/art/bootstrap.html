@@ -8,10 +8,10 @@
 <meta name="description" content="metrics.in.r">
 <title>Bootstrap and Quantile Regression • metrics.in.r</title>
 <script src="../../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../../deps/bootstrap-5.1.3/bootstrap.min.css" rel="stylesheet">
-<script src="../../deps/bootstrap-5.1.3/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link href="../../deps/bootstrap-5.2.2/bootstrap.min.css" rel="stylesheet">
+<script src="../../deps/bootstrap-5.2.2/bootstrap.bundle.min.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
-<!-- bootstrap-toc --><script src="https://cdn.rawgit.com/afeld/bootstrap-toc/v1.0.1/dist/bootstrap-toc.min.js"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../../pkgdown.js"></script><meta property="og:title" content="Bootstrap and Quantile Regression">
+<!-- bootstrap-toc --><script src="https://cdn.jsdelivr.net/gh/afeld/bootstrap-toc@v1.0.1/dist/bootstrap-toc.min.js" integrity="sha256-4veVQbu7//Lk5TSmc7YV48MxtMy98e26cf5MrgZYnwo=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- search --><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- pkgdown --><script src="../../pkgdown.js"></script><meta property="og:title" content="Bootstrap and Quantile Regression">
 <meta property="og:description" content="metrics.in.r">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -26,7 +26,7 @@
     
     <a class="navbar-brand me-2" href="../../index.html">metrics.in.r</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.3.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -218,7 +218,7 @@ What it would look like is:</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## Bootstrap Statistics :</span></span>
 <span><span class="co">##     original     bias    std. error</span></span>
-<span><span class="co">## t1*  11.5429 0.07424098   0.2232548</span></span></code></pre>
+<span><span class="co">## t1*  11.5429 0.08473248   0.2259398</span></span></code></pre>
 <p>Notice that it doesn’t return a numeric vector like mosaic or the DIY
 versions, but instead a “boot object” that will print a summary of the
 bootstrap procedure.</p>
@@ -331,13 +331,13 @@ model:</p>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">mosaic_out</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##        name       lower       upper level     method    estimate</span></span>
-<span><span class="co">## 1 Intercept -23.7536225 -10.5380294  0.95 percentile -16.6397660</span></span>
-<span><span class="co">## 2      educ   1.3138099   2.1350540  0.95 percentile   1.7015644</span></span>
-<span><span class="co">## 3      abil   0.2714626   0.6901692  0.95 percentile   0.4879376</span></span>
-<span><span class="co">## 4     exper   0.4234951   0.8830136  0.95 percentile   0.6393264</span></span>
-<span><span class="co">## 5     sigma   7.3367055   9.2959720  0.95 percentile   8.3210291</span></span>
-<span><span class="co">## 6 r.squared   0.1304245   0.2038105  0.95 percentile   0.1625965</span></span>
-<span><span class="co">## 7         F  61.2944599 104.6114629  0.95 percentile  79.3497685</span></span></code></pre>
+<span><span class="co">## 1 Intercept -24.2248849 -10.1248815  0.95 percentile -16.6397660</span></span>
+<span><span class="co">## 2      educ   1.2881430   2.1616274  0.95 percentile   1.7015644</span></span>
+<span><span class="co">## 3      abil   0.2813780   0.7090569  0.95 percentile   0.4879376</span></span>
+<span><span class="co">## 4     exper   0.4357194   0.8698818  0.95 percentile   0.6393264</span></span>
+<span><span class="co">## 5     sigma   7.3391319   9.4515847  0.95 percentile   8.3210291</span></span>
+<span><span class="co">## 6 r.squared   0.1278415   0.2039538  0.95 percentile   0.1625965</span></span>
+<span><span class="co">## 7         F  59.9025740 104.7038767  0.95 percentile  79.3497685</span></span></code></pre>
 <p>To a quantile regression:</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">mosaic_out</span> <span class="op">&lt;-</span> <span class="fu">do</span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/pkg/quantreg/man/rq.html" class="external-link">rq</a></span><span class="op">(</span></span>
@@ -375,7 +375,7 @@ as opposed to the 25th. In other words, you care about the value of
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/stats/confint.html" class="external-link">confint</a></span><span class="op">(</span><span class="va">diff_pe_expers</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##            name     lower     upper level     method estimate</span></span>
-<span><span class="co">## 1 diff_pe_exper 0.2266667 0.5941559  0.95 percentile  0.41232</span></span></code></pre>
+<span><span class="co">## 1 diff_pe_exper 0.2274937 0.5872442  0.95 percentile  0.41232</span></span></code></pre>
 <p>The output tells us that expected returns to experience are about 20
 to 60 cents higher for higher earners than lower earners, HAEF. This
 solution is pretty straightforward, as long as you know <em>a
@@ -405,33 +405,33 @@ number of bootstrap iterations:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/stats/vcov.html" class="external-link">vcov</a></span><span class="op">(</span><span class="va">model</span>, R <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##                   (Intercept)[0.25]    educ[0.25]    abil[0.25]   exper[0.25]</span></span>
-<span><span class="co">## (Intercept)[0.25]        3.27538099 -0.1817091023  0.0210373661 -0.0914223158</span></span>
-<span><span class="co">## educ[0.25]              -0.18170910  0.0118361366 -0.0027994191  0.0034264854</span></span>
-<span><span class="co">## abil[0.25]               0.02103737 -0.0027994191  0.0056874115  0.0006791220</span></span>
-<span><span class="co">## exper[0.25]             -0.09142232  0.0034264854  0.0006791220  0.0043025382</span></span>
-<span><span class="co">## (Intercept)[0.75]        0.88994065 -0.0450989319 -0.0044857278 -0.0272511213</span></span>
-<span><span class="co">## educ[0.75]              -0.04196011  0.0026072050  0.0001833641  0.0007735476</span></span>
-<span><span class="co">## abil[0.75]              -0.01608600  0.0002585832  0.0013855153  0.0009958219</span></span>
-<span><span class="co">## exper[0.75]             -0.02589159  0.0007601568  0.0001847229  0.0014945039</span></span>
-<span><span class="co">##                   (Intercept)[0.75]    educ[0.75]    abil[0.75]   exper[0.75]</span></span>
-<span><span class="co">## (Intercept)[0.25]       0.889940648 -0.0419601137 -0.0160859977 -0.0258915910</span></span>
-<span><span class="co">## educ[0.25]             -0.045098932  0.0026072050  0.0002585832  0.0007601568</span></span>
-<span><span class="co">## abil[0.25]             -0.004485728  0.0001833641  0.0013855153  0.0001847229</span></span>
-<span><span class="co">## exper[0.25]            -0.027251121  0.0007735476  0.0009958219  0.0014945039</span></span>
-<span><span class="co">## (Intercept)[0.75]       5.670406000 -0.3568743352  0.1538162403 -0.1362210061</span></span>
-<span><span class="co">## educ[0.75]             -0.356874335  0.0260873078 -0.0147884744  0.0052054917</span></span>
-<span><span class="co">## abil[0.75]              0.153816240 -0.0147884744  0.0171588427  0.0003300730</span></span>
-<span><span class="co">## exper[0.75]            -0.136221006  0.0052054917  0.0003300730  0.0069060924</span></span></code></pre>
+<span><span class="co">## (Intercept)[0.25]        3.05964648 -0.1596113099  0.0277548590 -0.0920822482</span></span>
+<span><span class="co">## educ[0.25]              -0.15961131  0.0101242832 -0.0031352182  0.0031663337</span></span>
+<span><span class="co">## abil[0.25]               0.02775486 -0.0031352182  0.0068248683  0.0003682102</span></span>
+<span><span class="co">## exper[0.25]             -0.09208225  0.0031663337  0.0003682102  0.0044977073</span></span>
+<span><span class="co">## (Intercept)[0.75]        1.30028026 -0.0833079185  0.0338220738 -0.0319297662</span></span>
+<span><span class="co">## educ[0.75]              -0.08926323  0.0064959747 -0.0035615565  0.0014083107</span></span>
+<span><span class="co">## abil[0.75]               0.03212956 -0.0027951201  0.0056278899 -0.0003267764</span></span>
+<span><span class="co">## exper[0.75]             -0.01847228  0.0005239467  0.0004108433  0.0012921464</span></span>
+<span><span class="co">##                   (Intercept)[0.75]   educ[0.75]    abil[0.75]   exper[0.75]</span></span>
+<span><span class="co">## (Intercept)[0.25]        1.30028026 -0.089263233  0.0321295590 -0.0184722803</span></span>
+<span><span class="co">## educ[0.25]              -0.08330792  0.006495975 -0.0027951201  0.0005239467</span></span>
+<span><span class="co">## abil[0.25]               0.03382207 -0.003561557  0.0056278899  0.0004108433</span></span>
+<span><span class="co">## exper[0.25]             -0.03192977  0.001408311 -0.0003267764  0.0012921464</span></span>
+<span><span class="co">## (Intercept)[0.75]        6.28821555 -0.402361577  0.1357919878 -0.1457707408</span></span>
+<span><span class="co">## educ[0.75]              -0.40236158  0.029213381 -0.0133234311  0.0058479459</span></span>
+<span><span class="co">## abil[0.75]               0.13579199 -0.013323431  0.0179562249  0.0008463202</span></span>
+<span><span class="co">## exper[0.75]             -0.14577074  0.005847946  0.0008463202  0.0073146552</span></span></code></pre>
 <p><strong>Putting it all together</strong>: With this machinery in
 place, we can use the <code>lincom</code> command to run the same
 comparison above, of the returns to experience for high vs. low
 earners:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../../reference/lincom.html">lincom</a></span><span class="op">(</span><span class="va">model</span>, <span class="va">`exper[0.75]`</span> <span class="op">-</span> <span class="va">`exper[0.25]`</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 5</span></span></span>
-<span><span class="co">##   Expression                    Estimate `Std. Error` `t-Value` `Pr(&gt;|t|)`</span></span>
-<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>                            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
-<span><span class="co">## <span style="color: #BCBCBC;">1</span> `exper[0.75]` - `exper[0.25]`    0.412       0.096<span style="text-decoration: underline;">8</span>      4.26  0.000<span style="text-decoration: underline;">022</span>1</span></span></code></pre>
+<pre><code><span><span class="co">## <span style="color: #949494;"># A tibble: 1 × 7</span></span></span>
+<span><span class="co">##   Expression    Estimate `Std. Error` `t-Value` `Pr(&gt;|t|)` `CI Lower` `CI Upper`</span></span>
+<span><span class="co">##   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>            <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>        <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span></span>
+<span><span class="co">## <span style="color: #BCBCBC;">1</span> `exper[0.75]…    0.412       0.092<span style="text-decoration: underline;">3</span>      4.47 0.000<span style="text-decoration: underline;">008</span>59      0.593      0.231</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="conclusion-and-comparison-of-solutions">Conclusion and Comparison of Solutions<a class="anchor" aria-label="anchor" href="#conclusion-and-comparison-of-solutions"></a>
@@ -486,7 +486,7 @@ trade-offs they were weighing.</p>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
     </footer>
