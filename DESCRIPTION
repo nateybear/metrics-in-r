@@ -1,6 +1,6 @@
 Package: metrics.in.r
 Title: Do Your Econometrics Homework in R
-Version: 0.3.0
+Version: 0.4.0
 Authors@R: 
     person("Nathan", "Gardner Hattersley", , "nhattersley@utexas.edu", role = c("aut", "cre"))
 Description: This is a metapackage and set of vignettes for helping econometrics students do their homework in R. It contains information about how to do basic econometrics in R, as well as information on how to create reproducible research.

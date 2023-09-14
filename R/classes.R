@@ -4,7 +4,7 @@
 #### own summaryTable using the correct test statistics.
 
 postEstimation <- function(clazz) {
-  function(model, ..., vcov. = NULL, params = NULL) {
+  function(model, ..., vcov. = NULL, params = NULL, alpha = 0.95) {
     # if different names are supplied via params, use them
     coefs <- normalized_coef(model)
     if (!is.null(params)) {
@@ -22,7 +22,7 @@ postEstimation <- function(clazz) {
 
     out <- deltaMethod(..., coefs = coefs, vcov. = V)
 
-    structure(append(out, list(model = model, params = params)), class = c(clazz, "postEstimation", "list"))
+    structure(append(out, list(model = model, params = params, alpha = alpha)), class = c(clazz, "postEstimation", "list"))
   }
 }
 

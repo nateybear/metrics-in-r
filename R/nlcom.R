@@ -51,11 +51,16 @@ summaryTable.nlcom <- function(x) {
   z_val <- estimate / se
   p_val <- 2 * stats::pnorm(-abs(z_val))
 
+  t_crit <- stats::qt((1 - x$alpha) / 2, df = stats::df.residual(x$model))
+
+
   tibble::tibble(
     `Expression` = names(estimate),
     `Estimate` = estimate,
     `Std. Error` = se,
     `Z-Value` = z_val,
-    `Pr(>|z|)` = p_val
+    `Pr(>|z|)` = p_val,
+    `CI Lower` = estimate - se * t_crit,
+    `CI Upper` = estimate + se * t_crit
   )
 }

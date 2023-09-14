@@ -26,11 +26,15 @@ summaryTable.lincom <- function(x) {
   t_val <- estimate / se
   p_val <- 2 * stats::pt(-abs(t_val), df = stats::df.residual(x$model))
 
+  t_crit <- stats::qt((1 - x$alpha) / 2, df = stats::df.residual(x$model))
+
   tibble::tibble(
     `Expression` = names(estimate),
     `Estimate` = estimate,
     `Std. Error` = se,
     `t-Value` = t_val,
-    `Pr(>|t|)` = p_val
+    `Pr(>|t|)` = p_val,
+    `CI Lower` = estimate - se * t_crit,
+    `CI Upper` = estimate + se * t_crit
   )
 }
